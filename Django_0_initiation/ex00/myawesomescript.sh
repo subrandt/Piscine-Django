@@ -7,10 +7,10 @@ if [ $# -ne 1 ]; then
 fi
 
 # Checking if the given link begins with "bit.ly"
-if ! echo "$1" | grep -q "^https\?://bit\.ly"; then
-    echo "The input has to begin with: bit.ly"
-    exit 1
-fi
+#if ! echo "$1" | grep -q "^https\?://bit\.ly"; then
+#    echo "The input has to begin with: bit.ly"
+#    exit 1
+#fi
 
 # Adress Bit.ly to decode
 BITLY_LINK=$1
