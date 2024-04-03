@@ -1,38 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Progress Bar</title>
     <link rel="stylesheet" href="style.css">
+    <style >
+        p[data-value="80"] {
+            width: 80%;
+        }
+        p[data-value="60"] {
+            width: 60%;
+        }
+        p[data-value="50"] {
+            width: 50%;
+        }
+        p[data-value="75"] {
+            width: 75%;
+        }
+        p[data-value="65"] {
+            width: 65%;
+        }
+        p[data-value="35"] {
+            width: 35%;
+        }
+    </style>
 </head>
 
 <body>
 
-<div>
-    <li> 
-        <h2>FRONTEND</h2>
-        <label class="html5" >HTML5</label>
-        <progress class="progress-bar" value="80" max="100">80%</progress>
+    <div>
+        <li>
+            <h2>Frontend</h2>
 
-        <label >CSS3</label>
-        <progress value="60" max="100">60%</progress>
+            <p data-value="80" class="html5">HTML5</p>
+            <progress class="progress-bar html5" value="80" max="100"></progress>
 
-        <label >jQuery</label>
-        <progress value="50" max="100">50%</progress>
-    </li>
-    <li> 
-        <h2>BACKEND</h2>
-        <label >Python</label>
-        <progress value="75" max="100">75%</progress>
+            <p data-value="60">CSS3</p>
+            <progress class="progress-bar html5" value="60" max="100"></progress>
 
-        <label >PHP</label>
-        <progress value="65" max="100">65%</progress>
+            <p data-value="50">jQuery</p>
+            <progress class="progress-bar html5" value="50" max="100"></progress>
+        </li>
+        <li>
+            <h2>Backend</h2>
 
-        <label >jQuery</label>
-        <progress value="35" max="100">35%</progress>
-    </li>
-</div>
+            <p data-value="75">Python</p>
+            <progress class="progress-bar html5" value="75" max="100"></progress>
+
+            <p data-value="65">PHP</p>
+            <progress class="progress-bar html5" value="65" max="100"></progress>
+
+            <p data-value="35">Node.js</p>
+            <progress class="progress-bar html5" value="35" max="100"></progress>
+        </li>
+    </div>
 
 </body>
+
 </html>
