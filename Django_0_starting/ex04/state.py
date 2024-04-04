@@ -1,6 +1,6 @@
 import sys
 
-def capital_city(state: str):
+def capital_city(capital: str):
     states = {
         "Oregon" : "OR",
         "Alabama" : "AL",
@@ -16,8 +16,8 @@ def capital_city(state: str):
     }
     
     try:
-        tmp = states[state]
-        print(capital_cities[tmp])
+        tmp = capital_cities[capital]
+        print(states[tmp])
 
     except Exception:
         print("Unknown state")
