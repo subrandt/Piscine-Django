@@ -5,7 +5,7 @@ def display_numbers_from_file():
         print(numbers.replace(",", "\n"))
 
     except Exception as e:
-        print(f"toto {e}")
+        print(e)
 
 if __name__ == '__main__':
     display_numbers_from_file()
