@@ -22,6 +22,15 @@ if __name__ == '__main__':
         'Burton' : '1939',
     }
     
-    for (year, name) in sorted(d.items()):
-        print(year, ": ", name)
+    # create list from dictionnary:
+    musicians = []
+    for (name, year) in d.items():
+        tuple = (year, name)
+        musicians.append(tuple)
     
+    # sort list by year and alphabet:
+    musicians.sort()
+    
+    for (year, name) in musicians:
+    # print only musicians:
+        print(name)
