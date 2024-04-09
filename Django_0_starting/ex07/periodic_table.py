@@ -1,5 +1,56 @@
 import sys
 
+
+def extract_info(line):
+    # Divise la ligne en fonction du signe égal
+    parts = line.split("=")
+    if len(parts) != 2:
+        return None
+    
+    # Extraire le nom de l'élément (première partie)
+    name = parts[0].strip()
+    
+    # Diviser la deuxième partie en fonction des virgules
+    attributes = parts[1].split(",")
+    
+    # Initialisation des variables
+    position = None
+    number = None
+    molar = None
+    electron = None
+    
+    # Parcourir les attributs pour extraire les valeurs pertinentes
+    for attr in attributes:
+        attr_parts = attr.strip().split(":")
+        if len(attr_parts) == 2:
+            key = attr_parts[0].strip()
+            value = attr_parts[1].strip()
+            if key == "position":
+                position = int(value)
+            elif key == "number":
+                number = int(value)
+            elif key == "molar":
+                molar = float(value)
+            elif key == "electron":
+                electron = value
+    
+    return {
+        "name": name,
+        "position": position,
+        "number": number,
+        "molar": molar,
+        "electron": electron
+    }
+
+# Exemple d'utilisation
+line = "Hydrogen = position:0, number:1, small: H, molar:1.00794, electron:1"
+info = extract_info(line)
+if info:
+    print(info)
+else:
+    print("Erreur lors de l'extraction des informations")
+
+
 def create_periodic_table():
     
     try:
