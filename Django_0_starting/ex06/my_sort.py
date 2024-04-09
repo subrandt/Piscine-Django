@@ -1,4 +1,4 @@
-if __name__ == '__main__':
+def sort_musician_list():
     d = {
         'Hendrix' : '1942',
         'Allman' : '1946',
@@ -24,6 +24,7 @@ if __name__ == '__main__':
     
     # create list from dictionnary:
     musicians = []
+    
     for (name, year) in d.items():
         tuple = (year, name)
         musicians.append(tuple)
@@ -34,3 +35,7 @@ if __name__ == '__main__':
     for (year, name) in musicians:
     # print only musicians:
         print(name)
+        
+
+if __name__ == '__main__':
+    sort_musician_list()
