@@ -13,16 +13,18 @@ def create_periodic_table():
 
         # write in html file:
         create_html.write("<!DOCTYPE html>\n<html lang=\"en\">\n")
+        # ajouter un head avec les styles
         create_html.write("<body>\n")
         create_html.write("<table>\n")
         
         while(1):
-            create_html.write("<tr>\n")
-            create_html.write("<td style=\"border: 1px solid black; padding:10px\">\n")
+            
             
             periodic_table_element = file.readline()
             if(periodic_table_element == ''):
                 break
+            create_html.write("<tr>\n")
+            create_html.write("<td style=\"border: 1px solid black; padding:10px\">\n")
             create_html.write(periodic_table_element)
             
             
