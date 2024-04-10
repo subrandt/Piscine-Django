@@ -54,7 +54,8 @@ def create_periodic_table():
 
         # write in html file:
         create_html.write("<!DOCTYPE html>\n<html lang=\"en\">\n")
-        # ajouter un head avec les styles
+        # ajouter des styles flex100% et largeurs des cellules
+        create_html.write("<style>\n.elem_cells {\nborder: 1px solid black; padding:10px\n}\n\n</style>\n")
         create_html.write("<body>\n")
         create_html.write("<table>\n")
         create_html.write("<tr>\n")
@@ -79,7 +80,7 @@ def create_periodic_table():
                 
        
             # write element boxes            
-            create_html.write("<td style=\"border: 1px solid black; padding:10px\">\n")
+            create_html.write("<td class=\"elem_cells\">\n")
             
             create_html.write("<h4>")
             create_html.write(name)
