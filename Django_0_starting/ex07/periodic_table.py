@@ -57,7 +57,8 @@ def create_periodic_table():
         # ajouter un head avec les styles
         create_html.write("<body>\n")
         create_html.write("<table>\n")
-        
+        create_html.write("<tr>\n")
+        last_position = 0
         while(1):
             
             
@@ -67,37 +68,48 @@ def create_periodic_table():
             
             # get element information
             (name, position, number, molar, electron) = extract_info(periodic_table_element)
-            create_html.write("<tr>\n")
+
+            if position < last_position:
+                create_html.write("</tr><tr>\n")
             
             # create_empty_boxes()
-            # if ()
-            
+            if (position - last_position > 1):
+                for _ in range(0, (position - last_position - 1)):
+                    create_html.write("<td>\n</td>\n")
+                
+       
+            # write element boxes            
             create_html.write("<td style=\"border: 1px solid black; padding:10px\">\n")
             
-            # write element boxes
             create_html.write("<h4>")
             create_html.write(name)
-            create_html.write("</h4>")
+            create_html.write("</h4>\n")
             
-            create_html.write("<ul>")
+            create_html.write("<ul>\n")
             create_html.write("<li>")
+            create_html.write("n°:")
             create_html.write(str(number))
-            create_html.write("</li>")
+            create_html.write("</li>\n")
             
             create_html.write("<li>")
+            create_html.write("mol:")
             create_html.write(str(molar))
-            create_html.write("</li>")
+            create_html.write("</li>\n")
 
             
             create_html.write("<li>")
+            create_html.write("el:")
             create_html.write(electron)
-            create_html.write("</li>")
-            create_html.write("</ul>")
+            create_html.write("</li>\n")
+            create_html.write("</ul>\n")
             
                 
             
             create_html.write("</td>\n")
-            create_html.write("</tr>\n")
+            
+            
+            last_position = position
+            
 
 
         create_html.write("</table>\n")
