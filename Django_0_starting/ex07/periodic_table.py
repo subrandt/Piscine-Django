@@ -1,25 +1,23 @@
 import sys
 
-
 def extract_info(line):
-    # Divise la ligne en fonction du signe égal
+    
+    # separate name and the rest
     parts = line.split("=")
     if len(parts) != 2:
         return None
     
-    # Extraire le nom de l'élément (première partie)
-    name = parts[0].strip()
-    
-    # Diviser la deuxième partie en fonction des virgules
+    # extract name
+    name = parts[0].strip()    
+
+    # extract variables
     attributes = parts[1].split(",")
     
-    # Initialisation des variables
     position = None
     number = None
     molar = None
     electron = None
     
-    # Parcourir les attributs pour extraire les valeurs pertinentes
     for attr in attributes:
         attr_parts = attr.strip().split(":")
         if len(attr_parts) == 2:
@@ -34,21 +32,13 @@ def extract_info(line):
             elif key == "electron":
                 electron = value
     
-    return {
-        "name": name,
-        "position": position,
-        "number": number,
-        "molar": molar,
-        "electron": electron
-    }
-
-# Exemple d'utilisation
-line = "Hydrogen = position:0, number:1, small: H, molar:1.00794, electron:1"
-info = extract_info(line)
-if info:
-    print(info)
-else:
-    print("Erreur lors de l'extraction des informations")
+    return (
+        name,
+        position,
+        number,
+        molar,
+        electron
+    )
 
 
 def create_periodic_table():
@@ -74,10 +64,37 @@ def create_periodic_table():
             periodic_table_element = file.readline()
             if(periodic_table_element == ''):
                 break
-            create_html.write("<tr>\n")
-            create_html.write("<td style=\"border: 1px solid black; padding:10px\">\n")
-            create_html.write(periodic_table_element)
             
+            # get element information
+            (name, position, number, molar, electron) = extract_info(periodic_table_element)
+            create_html.write("<tr>\n")
+            
+            # create_empty_boxes()
+            # if ()
+            
+            create_html.write("<td style=\"border: 1px solid black; padding:10px\">\n")
+            
+            # write element boxes
+            create_html.write("<h4>")
+            create_html.write(name)
+            create_html.write("</h4>")
+            
+            create_html.write("<ul>")
+            create_html.write("<li>")
+            create_html.write(str(number))
+            create_html.write("</li>")
+            
+            create_html.write("<li>")
+            create_html.write(str(molar))
+            create_html.write("</li>")
+
+            
+            create_html.write("<li>")
+            create_html.write(electron)
+            create_html.write("</li>")
+            create_html.write("</ul>")
+            
+                
             
             create_html.write("</td>\n")
             create_html.write("</tr>\n")
