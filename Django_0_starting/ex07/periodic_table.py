@@ -46,16 +46,14 @@ def create_periodic_table():
     try:
         # read in txt file
         file = open("periodic_table.txt", "r", encoding="utf8")
-        # periodic_table = file.read()
-
         
         # create html file
         create_html = open("periodic_table.html", "w")
 
         # write in html file:
         create_html.write("<!DOCTYPE html>\n<html lang=\"en\">\n")
-        # ajouter des styles flex100% et largeurs des cellules
-        create_html.write("<style>\n.elem_cells {\nborder: 1px solid black; padding:10px\n}\n\n</style>\n")
+        create_html.write("<head>\n<meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>PeriodicTable</title>")
+        create_html.write("<style>\n.elem_cells {\nborder: 1px solid black; padding:10px\n}\n\n</style>\n</head>\n")
         create_html.write("<body>\n")
         create_html.write("<table>\n")
         create_html.write("<tr>\n")
