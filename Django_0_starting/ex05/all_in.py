@@ -30,7 +30,7 @@ def use_dict(arg: str):
     if arg_lower in states_lower:
         tmp_state = states_lower[arg_lower]
         print(tmp_state)
-        print(capital_cities[tmp_state], "is the capital of", arg)
+        print(capital_cities[tmp_state], "is the capital of", arg.title())
         return
     
     # inversion of the dictionaries:
@@ -40,7 +40,7 @@ def use_dict(arg: str):
     #  if it is a capital
     if arg_lower in capital_to_state_lower:
         tmp2 = capital_to_state_lower[arg_lower]
-        print(arg, "is the capital of", abbr_to_state[tmp2])
+        print(arg.title(), "is the capital of", abbr_to_state[tmp2])
         return
 
     else:
