@@ -1,6 +1,9 @@
 import sys
 
 def use_dict(arg: str):
+
+    if not arg:
+        return
     
     if arg == "":
         return
@@ -29,7 +32,6 @@ def use_dict(arg: str):
     # if it is a state
     if arg_lower in states_lower:
         tmp_state = states_lower[arg_lower]
-        print(tmp_state)
         print(capital_cities[tmp_state], "is the capital of", arg.title())
         return
     
@@ -48,16 +50,16 @@ def use_dict(arg: str):
 
     
 def get_args(arg: str):
-    # try:
-        
+
+    try:
         after_split = [arg.strip() for arg in arg.split(',')]
         
         for element in after_split:
             use_dict(element)
         
 
-    # except Exception:
-    #     print("error")
+    except Exception:
+        print("error")
 
 
 if __name__ == '__main__':
