@@ -22,24 +22,24 @@ def use_dict(arg: str):
     # transform dictionaries to lower case for comparison
     states_lower = {k.lower(): v for k, v in states.items()}
     
-    arg = arg.lower()
+    arg_lower = arg.lower()
     
+
     
     # if it is a state
-    if arg in states_lower:
-        tmp_state = states_lower[arg]
+    if arg_lower in states_lower:
+        tmp_state = states_lower[arg_lower]
+        print(tmp_state)
         print(capital_cities[tmp_state], "is the capital of", arg)
         return
     
     # inversion of the dictionaries:
-    capital_to_state = {v: k for k, v in capital_cities.items()}
     capital_to_state_lower = {v.lower(): k for k, v in capital_cities.items()}
     abbr_to_state = {v: k for k, v in states.items()}
-    abbr_to_state_lower = {v.lower(): k for k, v in states.items()}
     
     #  if it is a capital
-    if arg in capital_to_state_lower:
-        tmp2 = capital_to_state_lower[arg]
+    if arg_lower in capital_to_state_lower:
+        tmp2 = capital_to_state_lower[arg_lower]
         print(arg, "is the capital of", abbr_to_state[tmp2])
         return
 
@@ -50,10 +50,7 @@ def use_dict(arg: str):
 def get_args(arg: str):
     # try:
         
-        print(arg)
-        
         after_split = [arg.strip() for arg in arg.split(',')]
-        print(after_split)
         
         for element in after_split:
             use_dict(element)
