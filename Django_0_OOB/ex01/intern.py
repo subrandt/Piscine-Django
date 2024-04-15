@@ -16,13 +16,13 @@ class Intern:
         return Coffee()
 
 def test_intern():
-    mark = Intern("Mark")
     nobody = Intern()
+    print("Instantiation without name: ", nobody)
 
-    print(mark)
-    print(nobody)
+    mark = Intern("Mark")
+    print("Instantiation with name: ", mark)
 
-    print(mark.make_coffee())
+    print("Make me a coffée, Marc! ", mark.make_coffee())
 
     try:
         nobody.work()
