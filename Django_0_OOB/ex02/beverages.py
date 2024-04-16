@@ -18,9 +18,6 @@ class Coffee(HotBeverage):
 class Tea(HotBeverage):
     def __init__(self):
         super().__init__("tea")
-    # price is not neccessary
-    def description(self):
-        return "Just some hot water in a cup."
     
 class Chocolate(HotBeverage):
     def __init__(self):

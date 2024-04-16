@@ -1,5 +1,5 @@
 import random
-from beverages import HotBeverage
+from beverages import HotBeverage , Coffee, Tea, Chocolate, Cappuccino
 
 
 class CoffeeMachine:
@@ -42,11 +42,16 @@ def test_coffee_machine():
     coffee_machine = CoffeeMachine("The Amazing Coffee Machine")
     print(coffee_machine.name)
     print("Status : ", coffee_machine.status)
-    
+
+# Dictionary of hot beverage classes
+    hot_beverages = {"Tea": Tea, "Coffee": Coffee, "Chocolate": Chocolate, "Cappuccino": Cappuccino}
+ 
     # Serve 12 beverages
     try:
         for i in range(12):
-            result = coffee_machine.serve(HotBeverage)
+            beverage_name = random.choice(list(hot_beverages.keys()))
+            beverage_class = hot_beverages[beverage_name]
+            result = coffee_machine.serve(beverage_class)
             print(f"Served Beverage: {result.name}")
             print(f"Total served beverages: {coffee_machine.served_cups}")
             print(result)
