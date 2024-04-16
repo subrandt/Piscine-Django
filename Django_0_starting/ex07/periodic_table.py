@@ -16,7 +16,7 @@ def extract_info(line):
     position = None
     number = None
     molar = None
-    electron = None
+    small = None
     
     for attr in attributes:
         attr_parts = attr.strip().split(":")
@@ -29,15 +29,15 @@ def extract_info(line):
                 number = int(value)
             elif key == "molar":
                 molar = float(value)
-            elif key == "electron":
-                electron = value
+            elif key == "small":
+                small = value
     
     return (
         name,
         position,
         number,
         molar,
-        electron
+        small
     )
 
 
@@ -66,7 +66,7 @@ def create_periodic_table():
                 break
             
             # get element information
-            (name, position, number, molar, electron) = extract_info(periodic_table_element)
+            (name, position, number, molar, small) = extract_info(periodic_table_element)
 
             if position < last_position:
                 create_html.write("</tr><tr>\n")
@@ -89,19 +89,17 @@ def create_periodic_table():
             create_html.write("n°:")
             create_html.write(str(number))
             create_html.write("</li>\n")
-            
+
+            create_html.write("<li>")
+            create_html.write("symbol:")
+            create_html.write(small)
+            create_html.write("</li>\n")
+            create_html.write("</ul>\n")
+                        
             create_html.write("<li>")
             create_html.write("mol:")
             create_html.write(str(molar))
             create_html.write("</li>\n")
-
-            
-            create_html.write("<li>")
-            create_html.write("el:")
-            create_html.write(electron)
-            create_html.write("</li>\n")
-            create_html.write("</ul>\n")
-            
                 
             
             create_html.write("</td>\n")
