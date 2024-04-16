@@ -13,7 +13,7 @@ class Text(str):
         Do you really need a comment to understand this method?..
         """
         s = super().__str__()
-        s = s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+        s = s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
         return s
     
 
