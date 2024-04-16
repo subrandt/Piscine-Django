@@ -52,7 +52,6 @@ def test_coffee_machine():
             beverage_name = random.choice(list(hot_beverages.keys()))
             beverage_class = hot_beverages[beverage_name]
             result = coffee_machine.serve(beverage_class)
-            print(f"Served Beverage: {result.name}")
             print(f"Total served beverages: {coffee_machine.served_cups}")
             print(result)
     except CoffeeMachine.BrokenMachineException:
@@ -64,8 +63,9 @@ def test_coffee_machine():
     # Serve 12 beverages again
     try:
         for i in range(12):
-            result = coffee_machine.serve(HotBeverage)
-            print(f"Served Beverage: {result.name}")
+            beverage_name = random.choice(list(hot_beverages.keys()))
+            beverage_class = hot_beverages[beverage_name]
+            result = coffee_machine.serve(beverage_class)
             print(f"Total served beverages: {coffee_machine.served_cups}")
             print(result)
     except CoffeeMachine.BrokenMachineException:
