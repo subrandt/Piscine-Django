@@ -94,12 +94,12 @@ def create_periodic_table():
             create_html.write("symbol:")
             create_html.write(small)
             create_html.write("</li>\n")
-            create_html.write("</ul>\n")
                         
             create_html.write("<li>")
             create_html.write("mol:")
             create_html.write(str(molar))
             create_html.write("</li>\n")
+            create_html.write("</ul>\n")
                 
             
             create_html.write("</td>\n")
