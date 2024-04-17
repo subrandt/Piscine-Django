@@ -8,27 +8,22 @@ class Text(str):
     Because directly using str class was too mainstream.
     """
 
-    def __str__(self, level=0):
+    def __str__(self):
         """
         Do you really need a comment to understand this method?..
         """
         s = super().__str__()
-        s = s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+        s = s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('\n', '\n<br />\n').replace('"', '&quot;')
         return s
     
-
-
-    def to_string(self, level=0):
-        s = self.__str__()
-        s = '  ' * level + s.replace('\n', '\n' + '  ' * level)
-        return s
 
 class Elem:
     """
     Elem will permit us to represent our HTML elements.
     """
     class ValidationError(Exception):
-        pass
+        def __init__(self, message):
+            self.message = message
 
     def __init__(self, tag='div', attr={}, content=None, tag_type='double'):
         """
@@ -36,9 +31,11 @@ class Elem:
 
         Obviously.
         """
+        if isinstance(content, str) and content == '' and not isinstance(content, (Elem, Text)):
+            raise self.ValidationError("Content cannot be an empty string")
         self.tag = tag
         self.attr = attr
-        self.content = [] if content is None else [content]
+        self.content = content if isinstance(content, list) else [content] if content else []
         self.tag_type = tag_type
 
     def __str__(self, level=0):
@@ -48,22 +45,13 @@ class Elem:
         Make sure it renders everything (tag, attributes, embedded
         elements...).
         """
+        attrs = self.__make_attr()
         if self.tag_type == 'double':
-            if isinstance(self.content, list):
-                content = '\n'.join(item.to_string(level + 1) if isinstance(item, (Elem, Text)) else str(item) for item in self.content)
-            elif isinstance(self.content, (Elem, Text)):
-                content = self.content.to_string(level + 1)
-            else:
-                content = str(self.content) if self.content else ''
-            indent = '  ' * level
-            inner_indent = '  ' * (level + 1)
-            content = f'\n{inner_indent}' + content + f'\n{indent}' if content else ''
-            return f"{indent}<{self.tag}>{content}{indent}</{self.tag}>"
+            inner = self.__make_content()
+            return f"<{self.tag}{attrs}>{inner}</{self.tag}>"
         else:
-            return f"{'  ' * level}<{self.tag} />"
-        
-    def to_string(self, level=0):
-        return self.__str__(level)
+            return f"<{self.tag}{attrs} />"
+
 
     def __make_attr(self):
         """
@@ -73,26 +61,37 @@ class Elem:
         for pair in sorted(self.attr.items()):
             result += ' ' + str(pair[0]) + '="' + str(pair[1]) + '"'
         return result
+    
 
     def __make_content(self):
         """
         Here is a method to render the content, including embedded elements.
         """
-
-        if len(self.content) == 0:
-            return ''
-        result = '\n'
-        for elem in self.content:
-            result += str(elem) + '\n'
+        empty = True
+        result = ''
+        if self.check_type(self.content):
+            if isinstance(self.content, list):
+                if len(self.content) == 0:
+                    return ''
+                for element in self.content:
+                    if element != '':
+                        empty = False
+                if empty is False:
+                    result = '\n'
+                for elem in self.content:
+                    if elem != '':
+                        result += "  " + str(elem).replace("\n", "\n  ") + "\n"
+            else:
+                result = "  " + str(self.content).replace("\n", "\n  ") + "\n"
         return result
 
     def add_content(self, content):
-        # if not Elem.check_type(content):
-        #     raise Elem.ValidationError
-        # if type(content) == list:
-        #     self.content += [elem for elem in content if elem != Text('')]
-        # elif content != Text(''):
+        if not isinstance(content, (Elem, Text)):
+            raise self.ValidationError("Invalid content type")
+        if isinstance(self.content, list):
             self.content.append(content)
+        else:
+            self.content = [self.content, content]
 
     @staticmethod
     def check_type(content):
@@ -106,17 +105,17 @@ class Elem:
                                                 for elem in content])))
 
 def create_html_output():
-    """
-    This function will create the HTML output file.
-    """
-    elem = Elem(tag='html', attr={})
-    elem.add_content(Elem(tag='head', attr={},
-                          content=Elem(tag='title', attr={}, content=Text('"Hello ground!"'))))
-    elem.add_content(Elem(tag='body', attr={},
-                          content=[Elem(tag='h1', attr={}, content=Text('"Oh no, not again!"')),
-                                   Elem(tag='img', attr={'src': 'http://i.imgur.com/pfp3T.jpg'}, tag_type='simple')]))
+    html = Elem('html', {}, [
+        Elem('head', {}, [
+            Elem('title', {}, ["Hello ground!"])
+        ]),
+        Elem('body', {}, [
+            Elem('h1', {}, ["Oh no, not again!"]),
+            Elem('img', {'src': "http://i.imgur.com/pfp3T.jpg"}, tag_type='simple')
+        ])
+    ])
 
-    print(elem)
+    print(html)
 
 if __name__ == '__main__':
     create_html_output()
