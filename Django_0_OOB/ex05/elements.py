@@ -83,6 +83,10 @@ class Br(Elem):
     def __init__(self, content=None, attr={}):
         super().__init__(tag='br', content=content, attr=attr)
 
+class Text(Elem):
+    def __init__(self, content=None, attr={}):
+        super().__init__(tag='text', content=content, attr=attr)
+
 def test_html_head_body():
     print("\nFirst Test: \"print( Html( [Head(), Body()] ) )\"")
     print(Html( [Head(), Body()]))
