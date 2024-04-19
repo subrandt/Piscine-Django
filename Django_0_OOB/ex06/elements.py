@@ -1,5 +1,5 @@
 from elem import Elem
-
+from elem import Text
 
 class Html(Elem):
     def __init__(self, content=None, attr={}):
@@ -89,17 +89,21 @@ def test_html_head_body():
     print(Html( [Head(), Body()]))
 
 def test_html_all_elements():
-    print("\nSecond Test: HTML document with all elements")
-    html = Html([
-        Head([
-            Title('"Hello ground!"')
-        ]),
-        Body([
-            H1('"Oh no, not again!"'),
-            Img(None, {'src': "http://i.imgur.com/pfp3T.jpg"})
+
+    try:
+        print("\nSecond Test: HTML document with all elements")
+        html = Html([
+            Head([
+                Title(Text('"Hello ground!"'))
+            ]),
+            Body([
+                H1(Text('"Oh no, not again!"')),
+                Img(None, {'src': "http://i.imgur.com/pfp3T.jpg"})
+            ])
         ])
-    ])
-    print(html)
+        print(html)
+    except Exception as e:
+        print(e)
 
 if __name__ == '__main__':
     test_html_head_body()

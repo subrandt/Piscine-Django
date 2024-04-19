@@ -107,17 +107,21 @@ class Elem:
                                                 for elem in content])))
 
 def create_html_output():
-    html = Elem('html', {}, [
-        Elem('head', {}, [
-            Elem('title', {}, [Text('"Hello ground!"')])
-        ]),
-        Elem('body', {}, [
-            Elem('h1', {}, [Text('"Oh no, not again!"')]),
-            Elem('img', {'src': "http://i.imgur.com/pfp3T.jpg"}, tag_type='simple')
+    try:
+        html = Elem('html', {}, [
+            Elem('head', {}, [
+                Elem('title', {}, [Text('"Hello ground!"')])
+            ]),
+            Elem('body', {}, [
+                Elem('h1', {}, [Text('"Oh no, not again!"')]),
+                Elem('img', {'src': "http://i.imgur.com/pfp3T.jpg"}, tag_type='simple')
+            ])
         ])
-    ])
 
-    print(html)
+        print(html)
+    except Exception as e:
+        print(e)
+
 
 if __name__ == '__main__':
     create_html_output()
