@@ -16,16 +16,16 @@ class Intern:
         return Coffee()
 
 def test_intern():
-    nobody = Intern()
-    print("Instantiation without name: ", nobody)
-
-    mark = Intern("Mark")
-    print("Instantiation with name: ", mark)
-
-    print("Make me a coffée, Marc! ", mark.make_coffee())
-
     try:
+        nobody = Intern()
+        print("Instantiation without name: ", nobody)
+
+        mark = Intern("Mark")
+        print("Instantiation with name: ", mark)
+        print("Make me a coffée, Mark! ", mark.make_coffee())
+
         nobody.work()
+        
     except Exception as e:
         print(e)
 

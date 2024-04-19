@@ -38,7 +38,7 @@ class Elem:
         self.content = content if isinstance(content, list) else [content] if content else []
         self.tag_type = tag_type
 
-    def __str__(self, level=0):
+    def __str__(self):
         """
         The __str__() method will permit us to make a plain HTML representation
         of our elements.
