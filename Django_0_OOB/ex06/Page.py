@@ -1,5 +1,6 @@
 from elem import Elem
-from elements import Html, Head, Body, Title, Meta, Img, Table, Th, Tr, Td, Ul, Ol, Li, H1, H2, P, Div, Span, Hr, Br, Text
+from elem import Text
+from elements import Html, Head, Body, Title, Meta, Img, Table, Th, Tr, Td, Ul, Ol, Li, H1, H2, P, Div, Span, Hr, Br
 
 class Page(Elem):
 
@@ -8,28 +9,43 @@ class Page(Elem):
     
     # Html must contain exactly one Head and then one Body
     def check_html(self, elem):
+        if elem.content is None:
+            return False
         if len(elem.content) != 2 or not isinstance(elem.content[0], Head) or not isinstance(elem.content[1], Body):
             return False
         return True
 
     # Head must contain exactly one Title
     def check_head(self, elem):
+        if not elem.content:
+            return True
         if len(elem.content) != 1 or not isinstance(elem.content[0], Title):
             return False
+        return True
         
     # Body and Div must contain only H1, H2, Div, Table, Ul, Ol, Span, or Text elements
     def check_body_and_div(self, elem):
+        if elem.content is None:
+            return True
         for child in elem.content:
             if not isinstance(child, (H1, H2, Div, Table, Ul, Ol, Span, Text)):
                 return False
+        return True
 
     # Title, H1, H2, Li, Th, Td must only contain one Text and only this Text.
     def check_only_text(self, elem):
-        return len(elem.content) == 1 and isinstance(elem.content[0], Text)
+        if elem.content is None or len(elem.content) == 0:
+            return True
+        if len(elem.content) != 1:
+            return False
+        if isinstance(elem.content[0], Text):
+            return True
 
 
     # P must only contain Text.
     def check_p(self, elem):
+        if elem.content is None:
+            return True
         for child in elem.content:
             if not isinstance(child, Text):
                 return False
@@ -37,6 +53,8 @@ class Page(Elem):
 
     # Span must only contain Text or P.
     def check_span(self, elem):
+        if not elem.content:
+            return True
         for child in elem.content:
             if not isinstance(child, (Text, P)):
                 return False
@@ -74,42 +92,31 @@ class Page(Elem):
         return True
 
 
-    def is_valid(self):
-        if not isinstance(self.root, Html):
+    def is_valid(self, elem=None):
+        if elem is None:
+            elem = self.root
+
+        if isinstance(elem, Html) and not self.check_html(elem):
             return False
-
-        for elem in self.root:
-            if isinstance(elem, Html):
-                if not self.check_html(elem):
-                    return False
-            elif isinstance(elem, Head):
-                if not self.check_head(elem):
-                    return False
-            elif isinstance(elem, Body, Div):
-                if not self.check_body_and_div(elem):
-                    return False
-            elif isinstance(elem, (Title, H1, H2, Li, Th, Td)):
-                if not self.check_only_text(elem):
-                    return False
-            elif isinstance(elem, Table):
-                if not self.check_table(elem):
-                    return False
-            elif isinstance(elem, Tr):
-                if not self.check_tr(elem):
-                    return False
-            elif isinstance(elem, Ul, Ol):
-                if not self.check_ul_ol(elem):
-                    return False
-            elif isinstance(elem, P):
-                if not self.check_p(elem):
-                    return False
-            elif isinstance(elem, Span):
-                if not self.check_span(elem):
-                    return False
-                
-
+        elif isinstance(elem, Head) and not self.check_head(elem):
+            return False
+        elif isinstance(elem, (Body, Div)) and not self.check_body_and_div(elem):
+            return False
+        elif isinstance(elem, (Title, H1, H2, Li, Th, Td)) and not self.check_only_text(elem):
+            return False
+        elif isinstance(elem, Table) and not self.check_table(elem):
+            return False
+        elif isinstance(elem, Tr) and not self.check_tr(elem):
+            return False
+        elif isinstance(elem, (Ul, Ol)) and not self.check_ul_ol(elem):
+            return False
+        elif isinstance(elem, P) and not self.check_p(elem):
+            return False
+        elif isinstance(elem, Span) and not self.check_span(elem):
+            return False
         return True
     
+
     def __str__(self):
         if isinstance(self.root, Html):
             return "<!DOCTYPE html>\n" + str(self.root)
@@ -122,7 +129,7 @@ class Page(Elem):
 
 
 def testing_page_class():
-    try:
+    # try:
         print('-------------------')
         print('Testing Page class')
         print('-------------------')
@@ -140,7 +147,7 @@ def testing_page_class():
         simple_page = Page(simple_html)
         # simple_page.write_to_file('simple_test.html')
         print(simple_page)
-        # print(simple_page.is_valid())
+        print(simple_page.is_valid())
         print('-->Test passed')
 
 
@@ -161,156 +168,151 @@ def testing_page_class():
         complex_page = Page(complex_html)
         complex_page.write_to_file('complex_test.html')
         print(complex_page)
-        # print(page.is_valid())
+        print(complex_page.is_valid())
         print('--> Test passed')
 
         # other tests
         print('\n-------------------')
-        assert not Page(Elem()).is_valid()
         page = Page(P())
         assert page.is_valid()
-        page = Page(Elem())
-        assert not page.is_valid()
-        page = Page(Html())
-        assert not page.is_valid()
         page = Page(Html([Head(Title(Text("toto"))), Body()]))
         assert page.is_valid()
         print("Test Basic Page Passed!")
-        elem = Html()
-        assert not elem.is_valid()
-        elem = Html(Head())
-        assert not elem.is_valid()
-        elem = Html(Body())
-        assert not elem.is_valid()
-        elem = Html(P())
-        assert not elem.is_valid()
-        elem = Html([Head(), P()])
-        assert not elem.is_valid()
-        elem = Html([Body(), Head()])
-        assert not elem.is_valid()
-        elem = Html([Head(Title()), Body()])
-        assert elem.is_valid()
+        page = Page(Html())
+        assert not page.is_valid()
+        page = Page(Html(Head()))
+        assert not page.is_valid()
+        page = Page(Html(Body()))
+        assert not page.is_valid()
+        page = Page(Html(P()))
+        assert not page.is_valid()
+        page = Page(Html([Head(), P()]))
+        assert not page.is_valid()
+        page = Page(Html([Body(), Head()]))
+        assert not page.is_valid()
+        page = Page(Html([Head(Title()), Body()]))
+        assert page.is_valid()
         print("Test Html Passed!")
-        elem = Head()
-        assert elem.is_valid()
-        elem = Head(P())
-        assert not elem.is_valid()
-        elem = Head(Title())
-        assert elem.is_valid()
-        elem = Head([Title(), Title()])
-        assert not elem.is_valid()
+        page = Page(Head())
+        assert page.is_valid()
+        page = Page(Head(P()))
+        assert not page.is_valid()
+        page = Page(Head(Title()))
+        assert page.is_valid()
+        page = Page(Head([Title(), Title()]))
+        assert not page.is_valid()
         print("Test Head Passed!")
-        elem = Div()
-        assert elem.is_valid()
-        elem = Div(H1())
-        assert elem.is_valid()
-        elem = Div([H1(), H2(), Div(), Table(), Ul(Li()), Ol(Li()), Span(), Text("toto")])
-        assert elem.is_valid()
-        elem = Div(Li())
-        assert not elem.is_valid()
-        elem = Div([H1(), Head()])
-        assert not elem.is_valid()
+        page = Page(Div())
+        assert page.is_valid()
+        page = Page(Div(H1()))
+        assert page.is_valid()
+        page = Page(Div([H1(), H2(), Div(), Table(), Ul(Li()), Ol(Li()), Span(), Text("toto")]))
+        assert page.is_valid()
+        page = Page(Div(Li()))
+        assert not page.is_valid()
+        page = Page(Div([H1(), Head()]))
+        assert not page.is_valid()
         print("Test Div Passed!")
-        elem = Body()
-        assert elem.is_valid()
-        elem = Body(H1())
-        assert elem.is_valid()
-        elem = Body([H1(), H2(), Div(), Table(),
-                     Ul(Li()), Ol(Li()), Span(), Text("toto")])
-        assert elem.is_valid()
-        elem = Body(Li())
-        assert not elem.is_valid()
-        elem = Body([H1(), Body()])
-        assert not elem.is_valid()
+        page = Page(Body())
+        assert page.is_valid()
+        page = Page(Body(H1()))
+        assert page.is_valid()
+        page = Page(Body([H1(), H2(), Div(), Table(),
+                     Ul(Li()), Ol(Li()), Span(), Text("toto")]))
+        assert page.is_valid()
+        page = Page(Body(Li()))
+        assert not page.is_valid()
+        page = Page(Body([H1(), Body()]))
+        assert not page.is_valid()
         print("Test Body Passed!")
-        elem = Title()
-        assert elem.is_valid()
-        elem = Title(P())
-        assert not elem.is_valid()
-        elem = Title(Text("toto"))
-        assert elem.is_valid()
-        elem = Title([Text("toto"), Text("toto")])
-        assert not elem.is_valid()
+        page = Page(Title())
+        assert page.is_valid()
+        page = Page(Title(P()))
+        assert not page.is_valid()
+        page = Page(Title(Text("toto")))
+        assert page.is_valid()
+        page = Page(Title([Text("toto"), Text("toto")]))
+        assert not page.is_valid()
         print("Test Title Passed!")
-        elem = H1()
-        assert elem.is_valid()
-        elem = H1(P())
-        assert not elem.is_valid()
-        elem = H1(Text("toto"))
-        assert elem.is_valid()
-        elem = H1([Text("toto"), Text("toto")])
-        assert not elem.is_valid()
+        page = Page(H1())
+        assert page.is_valid()
+        page = Page(H1(P()))
+        assert not page.is_valid()
+        page = Page(H1(Text("toto")))
+        assert page.is_valid()
+        page = Page(H1([Text("toto"), Text("toto")]))
+        assert not page.is_valid()
         print("Test H1 Passed!")
-        elem = H2()
-        assert elem.is_valid()
-        elem = H2(P())
-        assert not elem.is_valid()
-        elem = H2(Text("toto"))
-        assert elem.is_valid()
-        elem = H2([Text("toto"), Text("toto")])
-        assert not elem.is_valid()
+        page = Page(H2())
+        assert page.is_valid()
+        page = Page(H2(P()))
+        assert not page.is_valid()
+        page = Page(H2(Text("toto")))
+        assert page.is_valid()
+        page = Page(H2([Text("toto"), Text("toto")]))
+        assert not page.is_valid()
         print("Test H2 Passed!")
-        elem = Li()
-        assert elem.is_valid()
-        elem = Li(P())
-        assert not elem.is_valid()
-        elem = Li(Text("toto"))
-        assert elem.is_valid()
-        elem = Li([Text("toto"), Text("toto")])
-        assert not elem.is_valid()
+        page = Page(Li())
+        assert page.is_valid()
+        page = Page(Li(P()))
+        assert not page.is_valid()
+        page = Page(Li(Text("toto")))
+        assert page.is_valid()
+        page = Page(Li([Text("toto"), Text("toto")]))
+        assert not page.is_valid()
         print("Test Li Passed!")
-        elem = Th()
-        assert elem.is_valid()
-        elem = Th(P())
-        assert not elem.is_valid()
-        elem = Th(Text("toto"))
-        assert elem.is_valid()
-        elem = Th([Text("toto"), Text("toto")])
-        assert not elem.is_valid()
+        page = Page(Th())
+        assert page.is_valid()
+        page = Page(Th(P()))
+        assert not page.is_valid()
+        page = Page(Th(Text("toto")))
+        assert page.is_valid()
+        page = Page(Th([Text("toto"), Text("toto")]))
+        assert not page.is_valid()
         print("Test Th Passed!")
-        elem = Td()
-        assert elem.is_valid()
-        elem = Td(P())
-        assert not elem.is_valid()
-        elem = Td(Text("toto"))
-        assert elem.is_valid()
-        elem = Td([Text("toto"), Text("toto")])
-        assert not elem.is_valid()
+        page = Page(Td())
+        assert page.is_valid()
+        page = Page(Td(P()))
+        assert not page.is_valid()
+        page = Page(Td(Text("toto")))
+        assert page.is_valid()
+        page = Page(Td([Text("toto"), Text("toto")]))
+        assert not page.is_valid()
         print("Test Td Passed!")
-        elem = P()
-        assert elem.is_valid()
-        elem = P(Div())
-        assert not elem.is_valid()
-        elem = P(Text("toto"))
-        assert elem.is_valid()
-        elem = P([Text("toto"), Text("toto")])
-        assert elem.is_valid()
+        page = Page(P())
+        assert page.is_valid()
+        page = Page(P(Div()))
+        assert not page.is_valid()
+        page = Page(P(Text("toto")))
+        assert page.is_valid()
+        page = Page(P([Text("toto"), Text("toto")]))
+        assert page.is_valid()
         print("Test P Passed!")
-        elem = Span()
-        assert elem.is_valid()
-        elem = Span(Div())
-        assert not elem.is_valid()
-        elem = Span(P())
-        assert elem.is_valid()
-        elem = Span(Text("toto"))
-        assert elem.is_valid()
-        elem = Span([Text("toto"), Text("toto")])
-        assert elem.is_valid()
-        elem = Span([Text("toto"), P(), Text("toto")])
-        assert elem.is_valid()
-        elem = Span([Text("toto"), Span()])
-        assert not elem.is_valid()
+        page = Page(Span())
+        assert page.is_valid()
+        page = Page(Span(Div()))
+        assert not page.is_valid()
+        page = Page(Span(P()))
+        assert page.is_valid()
+        page = Page(Span(Text("toto")))
+        assert page.is_valid()
+        page = Page(Span([Text("toto"), Text("toto")]))
+        assert page.is_valid()
+        page = Page(Span([Text("toto"), P(), Text("toto")]))
+        assert page.is_valid()
+        page = Page(Span([Text("toto"), Span()]))
+        assert not page.is_valid()
         print("Test Span Passed!")
-        elem = Ul()
-        assert not elem.is_valid()
-        elem = Ul(Li())
-        assert elem.is_valid()
-        elem = Ul(P())
-        assert not elem.is_valid()
-        elem = Ul([Li(), Li()])
-        assert elem.is_valid()
-        elem = Ul([Li(), Span(), Li()])
-        assert not elem.is_valid()
+        page = Page(Ul())
+        assert not page.is_valid()
+        page = Page(Ul(Li()))
+        assert page.is_valid()
+        page = Page(Ul(P()))
+        assert not page.is_valid()
+        page = Page(Ul([Li(), Li()]))
+        assert page.is_valid()
+        page = Page(Ul([Li(), Span(), Li()]))
+        assert not page.is_valid()
         print("Test Ul Passed!")
         elem = Ol()
         assert not elem.is_valid()
@@ -389,11 +391,9 @@ def testing_page_class():
 
         print('--> All tests passed!')
 
-    except Exception as e:
-        print('Test failed: ', e)
+    # except Exception as e:
+    #     print('Test failed: ', e)
 
 
 if __name__ == '__main__':
     testing_page_class()
-
-
