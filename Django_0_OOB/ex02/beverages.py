@@ -33,19 +33,21 @@ class Cappuccino(HotBeverage):
 
 
 if __name__== '__main__':
+    try:
+        hot_beverage = HotBeverage()
+        print(hot_beverage)
 
-    hot_beverage = HotBeverage()
-    print(hot_beverage)
+        coffee = Coffee()
+        print(coffee)
 
-    coffee = Coffee()
-    print(coffee)
+        tea = Tea()
+        print(tea)
 
-    tea = Tea()
-    print(tea)
+        chocolate = Chocolate()
+        print(chocolate)
 
-    chocolate = Chocolate()
-    print(chocolate)
+        cappuccino = Cappuccino()
+        print(cappuccino)
 
-    cappuccino = Cappuccino()
-    print(cappuccino)
-    
+    except Exception as e:
+        print(e)
