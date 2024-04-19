@@ -62,6 +62,8 @@ class Page(Elem):
 
     # Ul and Ol must contain at least one Li and only Li.
     def check_ul_ol(self, elem):
+        if not elem.content:
+            return False
         for child in elem.content:
             if not isinstance(child, Li):
                 return False
@@ -73,12 +75,8 @@ class Page(Elem):
         td = False
         for child in elem.content:
             if isinstance(child, Th):
-                if td:
-                    return False
                 th = True
             elif isinstance(child, Td):
-                if th:
-                    return False
                 td = True
             else:
                 return False
@@ -314,46 +312,46 @@ def testing_page_class():
         page = Page(Ul([Li(), Span(), Li()]))
         assert not page.is_valid()
         print("Test Ul Passed!")
-        elem = Ol()
-        assert not elem.is_valid()
-        elem = Ol(Li())
-        assert elem.is_valid()
-        elem = Ol(P())
-        assert not elem.is_valid()
-        elem = Ol([Li(), Li()])
-        assert elem.is_valid()
-        elem = Ol([Li(), Span(), Li()])
-        assert not elem.is_valid()
+        page = Page(Ol())
+        assert not page.is_valid()
+        page = Page(Ol(Li()))
+        assert page.is_valid()
+        page = Page(Ol(P()))
+        assert not page.is_valid()
+        page = Page(Ol([Li(), Li()]))
+        assert page.is_valid()
+        page = Page(Ol([Li(), Span(), Li()]))
+        assert not page.is_valid()
         print("Test Ol Passed!")
-        elem = Tr()
-        assert not elem.is_valid()
-        elem = Tr(Th())
-        assert elem.is_valid()
-        elem = Tr(Td())
-        assert elem.is_valid()
-        elem = Tr(Span())
-        assert not elem.is_valid()
-        elem = Tr([Th(), Td()])
-        assert elem.is_valid()
-        elem = Tr([Th(), Span(), Td()])
-        assert not elem.is_valid()
-        elem = Tr([Th(), Td(), Td()])
-        assert not elem.is_valid()
-        elem = Tr([Th(), Td(), Th()])
-        assert elem.is_valid()
+        page = Page(Tr())
+        assert not page.is_valid()
+        page = Page(Tr(Th()))
+        assert page.is_valid()
+        page = Page(Tr(Td()))
+        assert page.is_valid()
+        page = Page(Tr(Span()))
+        assert not page.is_valid()
+        page = Page(Tr([Th(), Td()]))
+        assert page.is_valid()
+        page = Page(Tr([Th(), Span(), Td()]))
+        assert not page.is_valid()
+        page = Page(Tr([Th(), Td(), Td()]))
+        assert page.is_valid()
+        page = Page(Tr([Th(), Td(), Th()]))
+        assert page.is_valid()
         print("Test Tr Passed!")
-        elem = Table()
-        assert elem.is_valid()
-        elem = Table(H1())
-        assert not elem.is_valid()
-        elem = Table(Text("toto"))
-        assert not elem.is_valid()
-        elem = Table(Tr(Th()))
-        assert elem.is_valid()
-        elem = Table([Tr(Th()), Tr(Th())])
-        assert elem.is_valid()
-        elem = Table([Tr(Th()), Span(), Tr(Th())])
-        assert not elem.is_valid()
+        page = Page(Table())
+        assert page.is_valid()
+        page = Page(Table(H1()))
+        assert not page.is_valid()
+        page = Page(Table(Text("toto")))
+        assert not page.is_valid()
+        page = Page(Table(Tr(Th())))
+        assert page.is_valid()
+        page = Page(Table([Tr(Th()), Tr(Th())]))
+        assert page.is_valid()
+        page = Page(Table([Tr(Th()), Span(), Tr(Th())]))
+        assert not page.is_valid()
         print("Test Table Passed!")
         print("All Test Passed!")
         page = Page(Html([
