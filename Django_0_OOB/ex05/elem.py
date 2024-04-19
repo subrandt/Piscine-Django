@@ -13,7 +13,9 @@ class Text(str):
         Do you really need a comment to understand this method?..
         """
         s = super().__str__()
-        s = s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('\n', '\n<br />\n').replace('"', '&quot;')
+        if s == '"':
+            return '&quot;'
+        s = s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('\n', '\n<br />\n').replace('&quot;', '"')
         return s
     
 
@@ -107,10 +109,10 @@ class Elem:
 def create_html_output():
     html = Elem('html', {}, [
         Elem('head', {}, [
-            Elem('title', {}, ["Hello ground!"])
+            Elem('title', {}, [Text('"Hello ground!"')])
         ]),
         Elem('body', {}, [
-            Elem('h1', {}, ["Oh no, not again!"]),
+            Elem('h1', {}, [Text('"Oh no, not again!"')]),
             Elem('img', {'src': "http://i.imgur.com/pfp3T.jpg"}, tag_type='simple')
         ])
     ])
