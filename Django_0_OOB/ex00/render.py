@@ -27,10 +27,10 @@ def error_handling_template_file(template_file: str):
     if not os.path.exists(template_file):
         print(f"Error: {template_file} does not exist.")
         sys.exit(1)
-
-    # check if the file is readable
-    if not os.access(template_file, os.R_OK):
-        print(f"Error: {template_file} is not readable.")
+    
+    # check if it is a file
+    if not isfile(template_file):
+        print(f"Error: {template_file} is not a file.")
         sys.exit(1)
     
     # check if the file is empty
