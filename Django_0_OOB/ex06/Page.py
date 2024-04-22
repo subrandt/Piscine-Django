@@ -353,39 +353,20 @@ def testing_page_class():
         page = Page(Table([Tr(Th()), Span(), Tr(Th())]))
         assert not page.is_valid()
         print("Test Table Passed!")
-        print("All Test Passed!")
-        page = Page(Html([
-            Head(Title(Text("My CV"))),
-            Body([
-                H1(Text("My CV")),
-                H2(Text("FirstName: Michel")),
-                H2(Text("LastName: Dubois")),
-                Br(),
-                H2(Text("Experiences:")),
-                Ul([
-                    Li(Text("42")),
-                    Li(Text("Toto Industry")),
-                    Li(Text("Tutu company")),
-                    ]),
-                Br(),
-                H2(Text("Skills:")),
-                Table([
-                    Tr([Th(Text("First"),
-                           {"style": "background-color: red;"}),
-                        Td(Text("1")),
-                        Th(Text("Yes"),
-                           {"style": "background-color: green;"}),
-                        Td(Text("y"))]),
-                    Tr([Th(Text("Second"),
-                           {"style": "background-color: blue;"}),
-                        Td(Text("2")),
-                        Th(Text("No")), Td(Text("n"))]),
-                    Tr([Th(Text("Third")), Td(Text("3")),
-                        Th(Text("Maybe")), Td(Text("m"))]),
-                ])
-            ])
-            ]))
+
+        print("Additionnal Tests:")
+        page = Page(Html([Head(), Body()]))
+        assert page.is_valid()
+        page = Page(Html([Head(Title(Text('title'))), Body()]))
+        assert page.is_valid()
+        page.write_to_file('additionnal.html')
         
+        page = Page(Html([Head(Title(Text('title'))), Body(Ol(H1(Text('foo'))))]))
+        assert page.is_valid()
+        page = Page(Html([Head(Title([Text('title')])), Body(Li())]))
+        assert not page.is_valid()
+
+        print("Additionnal Tests passed!")
 
         print('--> All tests passed!')
 
