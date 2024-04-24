@@ -13,6 +13,8 @@ class Page(Elem):
             return False
         if len(elem.content) != 2 or not isinstance(elem.content[0], Head) or not isinstance(elem.content[1], Body):
             return False
+        if not self.is_valid(elem.content[0]) or not self.is_valid(elem.content[1]):
+            return False
         return True
 
     # Head must contain exactly one Title
@@ -20,6 +22,8 @@ class Page(Elem):
         if not elem.content:
             return True
         if len(elem.content) != 1 or not isinstance(elem.content[0], Title):
+            return False
+        if not self.is_valid(elem.content[0]):
             return False
         return True
         
@@ -29,6 +33,8 @@ class Page(Elem):
             return True
         for child in elem.content:
             if not isinstance(child, (H1, H2, Div, Table, Ul, Ol, Span, Text)):
+                return False
+            if not self.is_valid(child):
                 return False
         return True
 
@@ -40,7 +46,7 @@ class Page(Elem):
             return False
         if isinstance(elem.content[0], Text):
             return True
-
+        return False
 
     # P must only contain Text.
     def check_p(self, elem):
@@ -48,6 +54,8 @@ class Page(Elem):
             return True
         for child in elem.content:
             if not isinstance(child, Text):
+                return False
+            if not self.is_valid(child):
                 return False
         return True
 
@@ -58,6 +66,8 @@ class Page(Elem):
         for child in elem.content:
             if not isinstance(child, (Text, P)):
                 return False
+            if not self.is_valid(child):
+                return False
         return True
 
     # Ul and Ol must contain at least one Li and only Li.
@@ -66,6 +76,8 @@ class Page(Elem):
             return False
         for child in elem.content:
             if not isinstance(child, Li):
+                return False
+            if not self.is_valid(child):
                 return False
         return True
 
@@ -76,8 +88,12 @@ class Page(Elem):
         for child in elem.content:
             if isinstance(child, Th):
                 th = True
+                if not self.is_valid(child):
+                    return False
             elif isinstance(child, Td):
                 td = True
+                if not self.is_valid(child):
+                    return False
             else:
                 return False
         return th or td
@@ -87,6 +103,8 @@ class Page(Elem):
         for child in elem.content:
             if not isinstance(child, Tr):
                 return False
+            if not self.is_valid(child):
+                return False
         return True
 
 
@@ -94,14 +112,11 @@ class Page(Elem):
         if elem is None:
             elem = self.root
 
-        # check elem;
         if isinstance(elem, Html) and not self.check_html(elem):
             return False
         elif isinstance(elem, Head) and not self.check_head(elem):
             return False
-        elif isinstance(elem, (Body)) and not self.check_body_and_div(elem):
-            return False
-        elif isinstance(elem, (Div)) and not self.check_body_and_div(elem):
+        elif isinstance(elem, (Body, Div)) and not self.check_body_and_div(elem):
             return False
         elif isinstance(elem, (Title, H1, H2, Li, Th, Td)) and not self.check_only_text(elem):
             return False
@@ -115,31 +130,6 @@ class Page(Elem):
             return False
         elif isinstance(elem, Span) and not self.check_span(elem):
             return False
-
-
-
-        #si valide boucle qui check les 
-        for param in elem.content:
-            if isinstance(param, Html) and not self.check_html(param):
-                return False
-            elif isinstance(param, Head) and not self.check_head(param):
-                return False
-            elif isinstance(param, (Body)) and not self.check_body_and_div(param):
-                return False
-            elif isinstance(param, (Div)) and not self.check_body_and_div(param):
-                return False
-            elif isinstance(param, (Title, H1, H2, Li, Th, Td)) and not self.check_only_text(param):
-                return False
-            elif isinstance(param, Table) and not self.check_table(param):
-                return False
-            elif isinstance(param, Tr) and not self.check_tr(param):
-                return False
-            elif isinstance(param, (Ul, Ol)) and not self.check_ul_ol(param):
-                return False
-            elif isinstance(param, P) and not self.check_p(param):
-                return False
-            elif isinstance(param, Span) and not self.check_span(param):
-                return False
         return True
     
 
@@ -389,7 +379,7 @@ def testing_page_class():
         assert page.is_valid()
         page.write_to_file('additionnal.html')
         
-        page = Page(Html([Head(Title(Text('title'))), Body(Ol(H1(Text('foo'))))]))
+        page = Page(Html([Head(Title(Text('title'))), Body(Ol(Li(Text('foo'))))]))
         assert page.is_valid()
         page = Page(Html([Head(Title([Text('title')])), Body(Li())]))
         assert not page.is_valid()
