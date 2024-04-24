@@ -94,11 +94,14 @@ class Page(Elem):
         if elem is None:
             elem = self.root
 
+        # check elem;
         if isinstance(elem, Html) and not self.check_html(elem):
             return False
         elif isinstance(elem, Head) and not self.check_head(elem):
             return False
-        elif isinstance(elem, (Body, Div)) and not self.check_body_and_div(elem):
+        elif isinstance(elem, (Body)) and not self.check_body_and_div(elem):
+            return False
+        elif isinstance(elem, (Div)) and not self.check_body_and_div(elem):
             return False
         elif isinstance(elem, (Title, H1, H2, Li, Th, Td)) and not self.check_only_text(elem):
             return False
@@ -112,6 +115,31 @@ class Page(Elem):
             return False
         elif isinstance(elem, Span) and not self.check_span(elem):
             return False
+
+
+
+        #si valide boucle qui check les 
+        for param in elem.content:
+            if isinstance(param, Html) and not self.check_html(param):
+                return False
+            elif isinstance(param, Head) and not self.check_head(param):
+                return False
+            elif isinstance(param, (Body)) and not self.check_body_and_div(param):
+                return False
+            elif isinstance(param, (Div)) and not self.check_body_and_div(param):
+                return False
+            elif isinstance(param, (Title, H1, H2, Li, Th, Td)) and not self.check_only_text(param):
+                return False
+            elif isinstance(param, Table) and not self.check_table(param):
+                return False
+            elif isinstance(param, Tr) and not self.check_tr(param):
+                return False
+            elif isinstance(param, (Ul, Ol)) and not self.check_ul_ol(param):
+                return False
+            elif isinstance(param, P) and not self.check_p(param):
+                return False
+            elif isinstance(param, Span) and not self.check_span(param):
+                return False
         return True
     
 
