@@ -45,6 +45,8 @@ class Page(Elem):
         if len(elem.content) != 1:
             return False
         if isinstance(elem.content[0], Text):
+            if hasattr(elem.content[0], 'content') and not isinstance(elem.content[0].content, str):
+                return False
             return True
         return False
 
@@ -383,7 +385,9 @@ def testing_page_class():
         assert page.is_valid()
         page = Page(Html([Head(Title([Text('title')])), Body(Li())]))
         assert not page.is_valid()
-
+        assert not page.is_valid()        
+        page = Page(Html([Head(Title(Text(Html))), Body(Ol(Li(Head('foo'))))]))
+        assert not page.is_valid() 
         print("Additionnal Tests passed!")
 
         print('--> All tests passed!')
