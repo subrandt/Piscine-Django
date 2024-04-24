@@ -152,41 +152,37 @@ def testing_page_class():
         print('Testing Page class')
         print('-------------------')
         print('Creating a simple page')
-        simple_html = Html([
-            Head([
-                Title("Simple Title")
-            ]),
+        simple_page = Page(Html([
+            Head(
+                Title(Text('Simple Title')),
+            ),
             Body([
-                H1("Simple Heading"),
-                P("Simple paragraph.")
+                H1(Text('Simple Heading')),
+                P(Text('Simple paragraph.'))
             ])
-        ])
+        ]))
 
-        simple_page = Page(simple_html)
         # simple_page.write_to_file('simple_test.html')
         print(simple_page)
-        print(simple_page.is_valid())
         print('-->Test passed')
 
 
         # create a more complex page
         print('\n-------------------')
         print('Creating a complex page')
-        complex_html = Html([
+        complex_page = Page(Html([
             Head([
-                Title("Complex Title"),
+                Title(Text("Complex Title")),
                 Meta(attr={'charset': 'UTF-8'})
             ]),
             Body([
-                H1("Complex Heading"),
-                P("Complex paragraph."),
+                H1(Text("Complex Heading")),
+                P(Text("Complex paragraph.")),
                 Img(attr={'src': 'image.jpg', 'alt': 'image'})
             ])
-        ])
-        complex_page = Page(complex_html)
+        ]))
         complex_page.write_to_file('complex_test.html')
         print(complex_page)
-        print(complex_page.is_valid())
         print('--> Test passed')
 
         # other tests
