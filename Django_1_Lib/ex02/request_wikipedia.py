@@ -12,7 +12,6 @@ def request_wikipedia(search_term):
         sys.exit(1)
 
     try:
-        # Obtenir le contenu de la page
         page_content = requests.get(f"https://fr.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&format=json&titles={response.json()[1][0]}")
         page_content.raise_for_status()
     except (requests.RequestException, ValueError):
