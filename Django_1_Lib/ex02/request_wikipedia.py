@@ -18,12 +18,34 @@ def request_wikipedia(search_term):
         print("Error getting page content")
         sys.exit(1)
 
-    # Nettoyer le résultat du formatage JSON ou Wiki Markup
-    cleaned_content = dewiki.from_string(json.loads(page_content.text)["query"]["pages"].popitem()[1]["extract"])
+    # Step 1: Load the page content as JSON
+    page_content_json = json.loads(page_content.text)
+    print("Page content JSON:", page_content_json)
+
+    # Step 2: Access the "query" key
+    query_content = page_content_json["query"]
+    print("Query content:", query_content)
+
+    # Step 3: Access the "pages" key
+    pages_content = query_content["pages"]
+    print("Pages content:", pages_content)
+
+    # Step 4: Use popitem() to get the last item from the dictionary
+    last_item_key, last_item_value = pages_content.popitem()
+    print("Last item key:", last_item_key)
+    print("Last item value:", last_item_value)
+
+    # Step 5: Access the "extract" key in the item's value
+    extract_content = last_item_value["extract"]
+    print("Extract content:", extract_content)
+
+    # Step 6: Use dewiki to clean the content
+    cleaned_content = dewiki.from_string(extract_content)
+    print("Cleaned content:", cleaned_content)
 
     # Écrire le résultat dans un fichier
-    with open(f"{search_term.replace(' ', '_')}.wiki", "w") as file:
-        file.write(cleaned_content)
+    # with open(f"{search_term.replace(' ', '_')}.wiki", "w") as file:
+    #     file.write(cleaned_content)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
