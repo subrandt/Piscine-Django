@@ -3,6 +3,12 @@ import json
 import dewiki
 import sys
 
+# Dependency Installation:
+    # activate venv
+    # pip install -r requirements.txt
+
+
+
 # Comment obtenir la reponse json de la page comme dans l'exemple du sujet ?
 # Comment faire une recherche mal orthographiée ?
 
