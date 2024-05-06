@@ -3,10 +3,14 @@ import json
 import dewiki
 import sys
 
+# Comment obtenir la reponse json de la page comme dans l'exemple du sujet ?
+# Comment faire une recherche mal orthographiée ?
+
 def request_wikipedia(search_term):
     try:
         response = requests.get(f"https://fr.wikipedia.org/w/api.php?action=opensearch&search={search_term}&format=json")
         response.raise_for_status()
+        print("Response JSON:", response.json())
     except (requests.RequestException, ValueError):
         print("Wikipedia API request error")
         sys.exit(1)
@@ -20,7 +24,6 @@ def request_wikipedia(search_term):
 
     # Step 1: Load the page content as JSON
     page_content_json = json.loads(page_content.text)
-    print("Page content JSON:", page_content_json)
 
     # Step 2: Access the "query" key
     query_content = page_content_json["query"]
@@ -43,7 +46,7 @@ def request_wikipedia(search_term):
     cleaned_content = dewiki.from_string(extract_content)
     print("Cleaned content:", cleaned_content)
 
-    # Écrire le résultat dans un fichier
+    # # Écrire le résultat dans un fichier
     # with open(f"{search_term.replace(' ', '_')}.wiki", "w") as file:
     #     file.write(cleaned_content)
 
