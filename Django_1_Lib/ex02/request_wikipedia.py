@@ -4,7 +4,7 @@ import dewiki
 import sys
 
 # Dependency Installation:
-    # activate venv
+    # activate venv: source venv/bin/activate
     # pip install -r requirements.txt
 
 
