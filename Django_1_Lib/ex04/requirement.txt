@@ -1,0 +1,8 @@
+Django==3.2.8
+psycopg2-binary==2.9.1 
+
+# psycopg2 is a PostgreSQL database adapter for Python. 
+# It is used to connect Python applications to a PostgreSQL database, 
+# allowing them to execute SQL queries and process the results.
+# In the context of Django, psycopg2 is often used as the database adapter when PostgreSQL 
+# is the chosen database for the Django application.
