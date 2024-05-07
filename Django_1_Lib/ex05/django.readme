@@ -8,3 +8,8 @@ https://docs.djangoproject.com/en/5.0/intro/tutorial01/
 4) Créer app (par exemple home ou helloworld)
     se positionner dans mysite (au meme niveau que manage.py), puis:
     python3 manage.py startapp helloworld
+
+5) Lancer le server:
+    python3 manage.py runserver
+6) Vérifier en 127.0.0.8000/helloworld
+
