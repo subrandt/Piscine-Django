@@ -1,30 +1,14 @@
-# import modules
 import sys
 import requests
 from bs4 import BeautifulSoup
 
 
 # Dependency Installation:
-    # activate venv
+    # activate venv: source venv/bin/activate
     # pip install -r requirements.txt
 
 
-
-# HTML Parsing: Use BeautifulSoup to parse the HTML content of the page. You will need to find the title of the page, the first link in the introduction paragraph that leads to another Wikipedia article, and check if there is a redirection.
-
-# Main Loop: Create a loop that repeats steps 3 and 4 until one of the following cases occurs:
-
-# The link leads to the "Philosophy" page.
-# The page contains no valid link.
-# The link leads to a page already visited.
-# Error Handling: Add appropriate error handling to manage potential errors, such as connection errors, server errors, parameter errors, request errors, etc.
-
-# Display Results: At the end, display the visited articles and the total number of visited articles. If the page contains no valid link or if the link leads to a page already visited, display an appropriate message.
-
-# Exit the Program: Ensure that the program exits cleanly at the end, regardless of the result.
-
-# Test the Program: Test the program with different search terms to verify that it works as expected.
-
+# HTML Parsing using BeautifulSoup
 def get_wikipedia_url(search_term):
     return f"https://en.wikipedia.org/wiki/{search_term}"
 
@@ -50,7 +34,6 @@ def get_first_link(page_content):
                     if text.rfind('(', 0, start) > text.rfind(')', 0, start):
                         continue
                     return link.get('href')
-
     return None
 
 def get_wikipedia_page(search_term):
@@ -65,10 +48,28 @@ def get_page_title_from_content(page_content):
     return soup.find('h1').get_text()
 
 def find_philosophy(search_term):
+    if search_term.lower() == 'philosophy':
+        print("0 roads from philosophy to philosophy")
+        return
+
     visited_pages = set()
     url = get_wikipedia_url(search_term)
+
+    # Main Loop: Create a loop until one of the following cases occurs:
+        # The link leads to the "Philosophy" page.
+        # The page contains no valid link.
+        # The link leads to a page already visited.
     while True:
         response = requests.get(url)
+        if response.status_code == 404:
+            print("Http Error 404: Page not found")
+            print("It leads to a dead end!")
+            break
+        try:
+            response.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            print(f"Error: {e}")
+            sys.exit(1)
         page_content = response.text
         title = get_page_title_from_content(page_content)
         if title in visited_pages:
