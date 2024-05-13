@@ -76,6 +76,47 @@ class TestRoadsToPhilosophy(unittest.TestCase):
         ]
         expected_output = "\n".join(expected_pages) + "\nIt leads to an infinite loop!"
         self.assertEqual(self.run_program("France"), expected_output)
+    
+    def test_rungis(self):
+        expected_pages = [
+            "Rungis",
+            "Communes of France",
+            "Administrative division",
+            "Sovereign state",
+            "State (polity)",
+            "Politics",
+            "Decision-making",
+            "Psychology",
+            "Mind",
+            "Thought",
+            "Consciousness",
+            "Awareness",
+            "Philosophy"
+        ]
+        expected_output = "\n".join(expected_pages) + "\n13 roads from Rungis to philosophy"
+        self.assertEqual(self.run_program("Rungis"), expected_output)
+
+    def test_IBM(self):
+        expected_pages = [
+            "IBM",
+            "Multinational corporation",
+            "Organization",
+            "Legal person",
+            "Law",
+            "Law enforcement",
+            "Government",
+            "State (polity)",
+            "Politics",
+            "Decision-making",
+            "Psychology",
+            "Mind",
+            "Thought",
+            "Consciousness",
+            "Awareness",            
+            "Philosophy"
+        ]
+        expected_output = "\n".join(expected_pages) + "\n16 roads from IBM to philosophy"
+        self.assertEqual(self.run_program("IBM"), expected_output)
 
 if __name__ == "__main__":
     unittest.main()
