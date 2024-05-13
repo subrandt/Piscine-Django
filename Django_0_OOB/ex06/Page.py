@@ -147,7 +147,7 @@ class Page(Elem):
 
 
 def testing_page_class():
-    # try:
+    try:
         print('-------------------')
         print('Testing Page class')
         print('-------------------')
@@ -388,8 +388,8 @@ def testing_page_class():
 
         print('--> All tests passed!')
 
-    # except Exception as e:
-    #     print('Test failed: ', e)
+    except Exception as e:
+        print('Test failed: ', e)
 
 
 if __name__ == '__main__':

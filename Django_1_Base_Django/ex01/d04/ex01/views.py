@@ -1,8 +1,10 @@
-from django.urls import path
-from . import views
+from django.shortcuts import render
 
-urlpatterns = [
-    path('django', views.django, name='django'),
-    path('affichage', views.affichage, name='affichage'),
-    path('templates', views.templates, name='templates'),
-]
+def django(request):
+    return render(request, 'ex01/django.html')
+
+def affichage(request):
+    return render(request, 'ex01/affichage.html')
+
+def templates(request):
+    return render(request, 'ex01/templates.html')
