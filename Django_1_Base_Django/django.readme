@@ -1,0 +1,33 @@
+# Django documentation
+[Django documentation](https://docs.djangoproject.com/en/5.0/intro/tutorial01/)
+
+## Création d'un nouveau projet
+
+1. **Créer venv**
+2. **Installer dépendances** à l'aide de `requirements.txt`
+3. **Créer le projet django** : 
+    ```bash
+    django-admin startproject mysite 
+    ```
+4. **Créer app** (par exemple home ou helloworld). Se positionner dans `mysite` (au même niveau que `manage.py`), puis :
+    ```bash
+    python3 manage.py startapp helloworld
+    ```
+5. **Lancer le server** :
+    ```bash
+    python3 manage.py runserver
+    ```
+6. **Vérifier** en `127.0.0.8000/helloworld`
+
+## Lors du lancement simple du projet 
+(tout est déjà setup)
+
+1. **Lancer venv** :
+    ```bash
+    source create_virtualenv.sh
+    ```
+2. **Se positionner** dans le dossier `manage.py`, puis lancer le server
+3. **Nettoyer le venv** :
+    ```bash
+    source clean_up.sh
+    ```
