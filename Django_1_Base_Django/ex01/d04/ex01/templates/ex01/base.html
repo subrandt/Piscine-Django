@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>{% block title %}{% endblock %}</title>
+    {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'ex01/style1.css' %}">
     {% block style %}{% endblock %}
 </head>
