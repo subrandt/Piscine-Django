@@ -1,15 +1,29 @@
-<table>
-    <tr>
-        {% for color in color_shades.keys %}
-            <th>{{ color }}</th>
-        {% endfor %}
-    </tr>
-    {% for i in range|slice:":50" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>50 Shades</title>
+    <style>
+        .cell {
+            height: 40px;
+            width: 80px;
+        }
+    </style>
+</head>
+<body>
+    <table>
         <tr>
-            {% for color in color_shades.keys %}
-                <td style="background-color: #{{ shade }}{{ shade }}{{ shade }};"></td>
-                <!-- <td style="background-color: #{{ color_shades[color][i] }}; height: 40px; width: 80px;"></td> -->
+            {% for color in colors %}
+                <th>{{ color }}</th>
             {% endfor %}
         </tr>
-    {% endfor %}
-</table>
+        {% for shade in shades %}
+            <tr>
+                {% for color in shade %}
+                    <td class="cell" style="background-color: {{ color }};"></td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
