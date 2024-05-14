@@ -1,0 +1,33 @@
+{% extends 'ex01/base.html' %}
+
+{% block title %}
+Ex01 : Moteur de template.
+{% endblock %}
+
+{% block style %}
+{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'ex01/style2.css' %}">
+{% endblock %}
+
+{% block content %}
+<p>
+    Le moteur de templates par défaut de Django est appelé Django Template Language (DTL). Il permet de séparer la logique de présentation de la logique de contrôle dans les applications web. Voici une description du fonctionnement de DTL ainsi que des éléments clés tels que les blocs, les boucles for, les structures de contrôle if et l'affichage de variables passées par contexte.
+</p>
+<ol>
+    <li>
+        <strong>Fonctionnement du moteur de templates :</strong> DTL fonctionne en remplaçant les balises de template dans un fichier de template par des valeurs dynamiques fournies par une vue. Les balises de template sont des marqueurs spéciaux dans le fichier de template qui indiquent à DTL comment générer le contenu dynamique. Les balises de template sont entourées de doubles accolades, par exemple {{ variable }}.
+    </li>
+    <li>
+        <strong>Blocs :</strong> Les blocs sont utilisés pour définir des sections de contenu dans un template qui peuvent être remplacées par du contenu spécifique à une vue particulière. Les blocs sont définis à l'aide de la balise {% verbatim %} {% block %} {% endverbatim %} et peuvent contenir du contenu par défaut qui sera utilisé si aucun contenu spécifique n'est fourni. Les blocs sont utiles pour définir des sections de contenu communes à plusieurs pages, telles que l'en-tête et le pied de page.
+    </li>
+    <li>
+        <strong>Boucles for ... in :</strong> Les boucles for sont utilisées pour itérer sur une liste d'éléments et afficher chacun d'entre eux dans le template. Les boucles for sont définies à l'aide de la balise {% verbatim %} {% for %} {% endverbatim %} et peuvent contenir des balises de template pour afficher les éléments de la liste. Les boucles for sont utiles pour afficher des listes d'éléments tels que des articles de blog ou des produits dans une boutique en ligne.    </li>
+    <li>
+        <strong>Structures de contrôle if :</strong> Les structures de contrôle if sont utilisées pour afficher du contenu conditionnel dans un template en fonction de la valeur d'une variable. Les structures de contrôle if sont définies à l'aide de la balise {% verbatim %}{% if %}{% endverbatim %} et peuvent contenir des balises de template pour afficher le contenu conditionnel. Les structures de contrôle if sont utiles pour afficher du contenu spécifique en fonction de l'état d'une application, tel que l'affichage d'un message d'erreur si une connexion échoue.    </li>
+    <li>
+        <strong>Affichage de variables passées par contexte :</strong> Les variables peuvent être passées à un template à l'aide d'un contexte. Le contexte est un dictionnaire Python qui contient des paires clé-valeur, où les clés sont les noms des variables et les valeurs sont les valeurs des variables. Les variables peuvent être affichées dans un template à l'aide de balises de template telles que {{ variable }}. Les variables sont utiles pour afficher du contenu dynamique dans un template, tel que le nom d'un utilisateur connecté.    </li>
+</ol>
+<p>
+    En résumé, DTL permet de séparer la logique de présentation de la logique de contrôle dans les applications web en utilisant des balises de template pour générer du contenu dynamique. Les blocs, les boucles for, les structures de contrôle if et l'affichage de variables passées par contexte sont des éléments clés de DTL qui permettent de créer des templates flexibles et réutilisables.
+</p>
+{% endblock %}

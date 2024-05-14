@@ -1,0 +1,15 @@
+<table>
+    <tr>
+        {% for color in color_shades.keys %}
+            <th>{{ color }}</th>
+        {% endfor %}
+    </tr>
+    {% for i in range|slice:":50" %}
+        <tr>
+            {% for color in color_shades.keys %}
+                <td style="background-color: #{{ shade }}{{ shade }}{{ shade }};"></td>
+                <!-- <td style="background-color: #{{ color_shades[color][i] }}; height: 40px; width: 80px;"></td> -->
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
