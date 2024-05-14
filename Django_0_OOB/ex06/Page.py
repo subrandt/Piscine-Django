@@ -380,7 +380,6 @@ def testing_page_class():
         page = Page(Html([Head(Title(Text('title'))), Body(Ol(Li(Text('foo'))))]))
         assert page.is_valid()
         page = Page(Html([Head(Title([Text('title')])), Body(Li())]))
-        assert not page.is_valid()
         assert not page.is_valid()        
         page = Page(Html([Head(Title(Text(Html))), Body(Ol(Li(Head('foo'))))]))
         assert not page.is_valid() 
