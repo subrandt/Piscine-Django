@@ -2,9 +2,12 @@
 <html>
 <head>
     <title>{% block title %}{% endblock %}</title>
+
+
+    {% block style %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'ex01/style1.css' %}">
-    {% block style %}{% endblock %}
+    {% endblock %}
 </head>
 <body>
     {% include 'ex01/nav.html' %}

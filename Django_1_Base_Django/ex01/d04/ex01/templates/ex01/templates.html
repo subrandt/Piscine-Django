@@ -4,6 +4,11 @@
 Ex01 : Moteur de template.
 {% endblock %}
 
+{% block style %}
+{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'ex01/style2.css' %}">
+{% endblock %}
+
 {% block content %}
 <p>
     Le moteur de templates par défaut de Django est appelé Django Template Language (DTL). Il permet de séparer la logique de présentation de la logique de contrôle dans les applications web. Voici une description du fonctionnement de DTL ainsi que des éléments clés tels que les blocs, les boucles for, les structures de contrôle if et l'affichage de variables passées par contexte.
