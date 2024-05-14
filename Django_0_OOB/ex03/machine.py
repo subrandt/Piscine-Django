@@ -54,9 +54,9 @@ def test_coffee_machine():
             result = coffee_machine.serve(beverage_class)
             print(f"Total served beverages: {coffee_machine.served_cups}")
             print(result)
-    except CoffeeMachine.BrokenMachineException:
+    except CoffeeMachine.BrokenMachineException as e:
+        print(e)
         # Repair the coffee machine
-        print("The coffee machine is broken. Repairing...")
         coffee_machine.repair()
         print("The coffee machine has been repaired.")
 
@@ -68,9 +68,9 @@ def test_coffee_machine():
             result = coffee_machine.serve(beverage_class)
             print(f"Total served beverages: {coffee_machine.served_cups}")
             print(result)
-    except CoffeeMachine.BrokenMachineException:
+    except CoffeeMachine.BrokenMachineException as e:
+        print(e)
         # Repair the coffee machine
-        print("The coffee machine is broken. Repairing...")
         coffee_machine.repair()
         print("The coffee machine has been repaired.")
 

@@ -29,7 +29,7 @@ def error_handling_template_file(template_file: str):
         sys.exit(1)
     
     # check if it is a file
-    if not isfile(template_file):
+    if not os.path.isfile(template_file):
         print(f"Error: {template_file} is not a file.")
         sys.exit(1)
     
