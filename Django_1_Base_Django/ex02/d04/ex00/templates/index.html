@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Markdown Cheatsheet</title>
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'ex00/images/favicon.ico' %}">
+    <style>
+        .Markdown-logo {
+            width: 20vw;
+        }
+    </style>
+</head>
+<body>
+    <img class="Markdown-logo" src="{% static 'ex00/images/Markdown-mark.png' %}" alt="Markdown Logo">
+    <h1>Markdown Cheatsheet</h1>
+    <p>Welcome to the Markdown Cheatsheet! Here you'll find examples of how to write Markdown.</p>
+    {% for title, element, example in cheatsheet %}
+    <div class="cheatsheet-item">
+        <h2>{{ title }}</h2>
+        <p>Element: <code>{{ element }}</code></p>
+        <p>Example:</p>
+        <pre>{{ example }}</pre>
+    </div>
+    {% endfor %}
+</body>
+</html>

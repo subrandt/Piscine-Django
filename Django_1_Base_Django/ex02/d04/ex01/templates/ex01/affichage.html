@@ -1,0 +1,40 @@
+{% extends 'ex01/base.html' %}
+
+{% block title %}
+Ex01 : Affichage
+{% endblock %}
+
+{% block content %}
+<p>
+    Le processus d'affichage d'une page web statique à partir d'un simple template en passant par une vue dans Django suit les étapes suivantes :
+</p>
+<ol>
+    <li>
+        Requête HTTP : Tout d'abord, un utilisateur envoie une requête HTTP à un serveur web en demandant une page web spécifique.
+    </li>
+    <li>
+        Routage de l'URL : Lorsque le serveur web reçoit la requête, il envoie la requête à Django. Django utilise alors l'URL fournie dans la requête pour déterminer quelle vue doit être appelée pour traiter la requête. Le routage de l'URL est défini dans le fichier urls.py de l'application Django.
+    </li>
+    <li>
+        Appel de la vue : Une fois que Django a déterminé quelle vue doit être appelée, il appelle cette vue en lui passant la requête HTTP en tant qu'argument.
+    </li>
+    <li>
+        Traitement de la vue : La vue est une fonction Python qui traite la requête HTTP et génère une réponse HTTP. Dans le cas d'une page web statique, la vue peut simplement charger un template HTML à partir du système de fichiers et le rendre en tant que réponse HTTP.
+    </li>
+    <li>
+        Chargement du template : Pour charger le template HTML, la vue utilise le moteur de template de Django. Le moteur de template recherche le template spécifié dans le système de fichiers et charge son contenu dans une chaîne de caractères.
+    </li>
+    <li>
+        Rendu du template : Le moteur de template remplace ensuite les variables dans le template par des valeurs spécifiques, telles que le titre de la page web ou le contenu du corps. Le résultat final est une chaîne de caractères HTML complète.
+    </li>
+    <li>
+        Réponse HTTP : La vue renvoie ensuite la chaîne de caractères HTML en tant que réponse HTTP au serveur web.
+    </li>
+    <li>
+        Affichage de la page web : Le serveur web renvoie la réponse HTTP au navigateur de l'utilisateur, qui affiche la page web en utilisant le code HTML fourni dans la réponse HTTP.
+    </li>
+</ol>
+<p>
+    En résumé, le processus d'affichage d'une page web statique à partir d'un simple template en passant par une vue dans Django implique le routage de l'URL, l'appel de la vue, le chargement du template, le rendu du template, la génération de la réponse HTTP et l'affichage de la page web dans le navigateur de l'utilisateur.
+</p>
+{% endblock %}
