@@ -40,13 +40,13 @@ def parse_date(date):
     return True
 
 def parse_latitude(latitude):
-    if not -90.0 <= latitude <= 90.0:
+    if not -90.0 < latitude < 90.0:
         print("Error: Latitude must be between -90 and 90")
         return False
     return True
 
 def parse_longitude(longitude):
-    if not -180.0 <= longitude <= 180.0:
+    if not -180.0 < longitude < 180.0:
         print("Error: Longitude must be between -180 and 180")
         return False
     return True
