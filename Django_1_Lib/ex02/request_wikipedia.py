@@ -53,7 +53,14 @@ def request_wikipedia(search_term):
 
     # Get the last item from the dictionary
     last_item_key, last_item_value = pages_content.popitem()
-    extract_content = last_item_value["extract"]
+ 
+    # Check if 'extract' key is in the dictionary
+    if 'extract' in last_item_value:
+        extract_content = last_item_value["extract"]
+    else:
+        print("L'article  « "+ search_term + " » n'existe pas sur ce wiki !")
+        exit(1)
+
 
     # Use dewiki to clean the content
     cleaned_content = dewiki.from_string(extract_content)
