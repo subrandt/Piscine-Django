@@ -7,11 +7,6 @@ import sys
     # activate venv: source venv/bin/activate
     # pip install -r requirements.txt
 
-
-
-# Comment obtenir la reponse json de la page comme dans l'exemple du sujet ?
-# Comment faire une recherche mal orthographiée ?
-
 def request_wikipedia(search_term):
 
     # Get the page title from the search term
