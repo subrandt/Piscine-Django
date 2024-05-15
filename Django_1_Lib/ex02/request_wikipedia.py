@@ -4,7 +4,6 @@ import dewiki
 import sys
 
 # Dependency Installation:
-    # activate venv: source venv/bin/activate
     # pip install -r requirements.txt
 
 def request_wikipedia(search_term):
