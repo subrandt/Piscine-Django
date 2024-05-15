@@ -62,7 +62,7 @@ def request_wikipedia(search_term):
 
     # Use dewiki to clean the content
     cleaned_content = dewiki.from_string(extract_content)
-    print("Cleaned content:", cleaned_content)
+    print(cleaned_content)
 
     # Write the cleaned content to a file
     with open(f"{search_term.replace(' ', '_')}.wiki", "w") as file:
