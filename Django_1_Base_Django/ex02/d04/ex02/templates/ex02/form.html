@@ -1,6 +1,5 @@
-<!-- ex02/templates/ex02/form.html -->
-
 <form method="post">
+    <!-- The csrf_token is a security feature that protects against Cross-Site Request Forgery attacks. -->
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit">

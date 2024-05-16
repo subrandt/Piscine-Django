@@ -23,5 +23,7 @@ def form_view(request):
             history = f.readlines()
     else:
         history = []
-
+    
+    # Render the form template with the form and the history as context
+    # The form instance is passed to the template where it will be rendered as HTML
     return render(request, 'ex02/form.html', {'form': form, 'history': history})
