@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Execute this script with:
-# source prepare_hello_world.sh
+# source create_virtualenv.sh
 
 # Create a virtual environment
 python3 -m venv virtualenv
@@ -11,4 +11,3 @@ source virtualenv/bin/activate
 
 # Install the dependencies
 pip install -r requirement.txt
-
