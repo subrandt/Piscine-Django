@@ -23,3 +23,13 @@ Django_0_OOB/ex03/__pycache__/beverages.cpython-310.pyc
 Django_1_Base_Django/ex00/d04/ex00/__pycache__/__init__.cpython-310.pyc
 Django_1_Base_Django/ex00/d04/ex00/__pycache__/urls.cpython-310.pyc
 Django_1_Base_Django/ex00/d04/ex00/__pycache__/views.cpython-310.pyc
+Django_2_SQL/d05/d05/asgi.py
+Django_2_SQL/d05/d05/wsgi.py
+# .gitignore
+*.pyc
+*~
+/__pycache__
+virtualenv
+db.sqlite3
+/static
+.DS_Store
