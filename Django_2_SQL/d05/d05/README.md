@@ -31,10 +31,12 @@ Django ORM génère le SQL nécessaire
 créer une migration pour le modèle Movies l'appliquer à la DB 
 Une migration est un ensemble de commandes pour modifier la DB (par exemple, créer une nouvelle table, ajouter un champ à une table existante, etc.). Django ORM génère ces migrations en fonction des modifications apportés aux modèles.
 puis executer dans le terminal:
-    python manage.py makemigrations ex01
-    python manage.py migrate
+    python3 manage.py makemigrations ex01
+    python3 manage.py migrate
 
-
+pour verifier la creation : tests unitaires
+executer les tests avec:
+    python3 manage.py test ex01
 
 ## ex02
 
