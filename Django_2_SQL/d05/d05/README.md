@@ -39,6 +39,25 @@ executer les tests avec:
     python3 manage.py test ex01
 
 ## ex02
+http://127.0.0.1:8000/ex02/init/
+http://127.0.0.1:8000/ex02/populate/
+http://127.0.0.1:8000/ex02/display/
+
 
 
 ## ex03
+faire les migrations de la DB avec:
+    python3 manage.py makemigrations ex03
+    python3 manage.py migrate
+avant de tester
+
+http://127.0.0.1:8000/ex03/populate/ - insere les données dans la DB
+http://127.0.0.1:8000/ex03/display/ - affiche les données de la table movies
+
+
+## ex04
+
+
+
+## ex05
+
