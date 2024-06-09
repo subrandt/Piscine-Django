@@ -56,7 +56,10 @@ http://127.0.0.1:8000/ex03/display/ - affiche les données de la table movies
 
 
 ## ex04
-
+http://127.0.0.1:8000/ex04/init/
+http://127.0.0.1:8000/ex04/populate/
+http://127.0.0.1:8000/ex04/display/
+http://127.0.0.1:8000/ex04/remove/
 
 
 ## ex05
