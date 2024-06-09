@@ -34,7 +34,7 @@ puis executer dans le terminal:
     python3 manage.py makemigrations ex01
     python3 manage.py migrate
 
-pour verifier la creation : tests unitaires
+pour verifier la creation : tests unitaires --> ne fonctionne pas pour le moment
 executer les tests avec:
     python3 manage.py test ex01
 
