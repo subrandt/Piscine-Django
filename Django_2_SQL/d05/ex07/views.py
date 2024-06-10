@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Movies
 from datetime import datetime
+from django.utils import timezone
 
 def populate(request):
     movies = [
@@ -15,7 +16,7 @@ def populate(request):
     ]
     for movie in movies:
         try:
-            m = Movies(episode_nb=movie[0], title=movie[1], director=movie[2], producer=movie[3], release_date=movie[4], created=datetime.now(), updated=datetime.now())
+            m = Movies(episode_nb=movie[0], title=movie[1], director=movie[2], producer=movie[3], release_date=movie[4],  created=timezone.now(), updated=timezone.now())
             m.save()
         except Exception as e:
             return HttpResponse(str(e))
