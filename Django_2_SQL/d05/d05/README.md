@@ -63,4 +63,23 @@ http://127.0.0.1:8000/ex04/remove/
 
 
 ## ex05
+faire les migrations de la DB avec:
+    python3 manage.py makemigrations ex05
+    python3 manage.py migrate
+avant de tester:
 
+http://127.0.0.1:8000/ex05/init/
+http://127.0.0.1:8000/ex05/populate/
+http://127.0.0.1:8000/ex05/display/
+http://127.0.0.1:8000/ex05/remove/
+
+
+## ex06
+
+## ex07
+
+## ex08
+
+## ex09
+
+## ex10
