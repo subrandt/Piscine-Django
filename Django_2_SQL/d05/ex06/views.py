@@ -20,7 +20,8 @@ def init(request):
                     producer VARCHAR(128) NOT NULL,
                     release_date DATE NOT NULL,
                     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                    updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+                    updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    opening_crawl TEXT
                 );
                 CREATE OR REPLACE FUNCTION update_changetimestamp_column()
                 RETURNS TRIGGER AS $$
@@ -80,14 +81,15 @@ def populate(request):
 def display(request):
     with connection.cursor() as cursor:
         try:
-            cursor.execute("SELECT * FROM ex04_movies")
-            rows = cursor.fetchall()
-            if not rows:
-                return HttpResponse("No data available")
-            else:
-                return render(request, 'ex06/display.html', {'movies': rows})
+            cursor.execute("SELECT * FROM ex06_movies")
+            movies = cursor.fetchall()
         except Exception as e:
             return HttpResponse("No data available")
+
+    if not movies:
+        return HttpResponse("No data available")
+
+    return render(request, 'ex06/display.html', {'movies': movies})
 
 def remove(request):
     with connection.cursor() as cursor:
