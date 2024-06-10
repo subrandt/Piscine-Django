@@ -52,10 +52,12 @@ def display(request):
 def remove(request):
     with connection.cursor() as cursor:
         if request.method == 'POST':
-            try:
-                cursor.execute("DELETE FROM ex04_movies WHERE episode_nb = %s", [request.POST['movie']])
-            except Exception as e:
-                return HttpResponse(e)
+            movie_id = request.POST.get('movie')
+            if movie_id:
+                try:
+                    cursor.execute("DELETE FROM ex04_movies WHERE episode_nb = %s", [movie_id])
+                except Exception as e:
+                    return HttpResponse(e)
         try:
             cursor.execute("SELECT * FROM ex04_movies")
             rows = cursor.fetchall()
@@ -63,4 +65,4 @@ def remove(request):
                 return HttpResponse("No data available")
         except Exception as e:
             return HttpResponse("No data available")
-    return render(request, 'remove.html', {'movies': rows})
+    return render(request, 'ex04/remove.html', {'movies': rows})
