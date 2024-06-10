@@ -75,6 +75,11 @@ http://127.0.0.1:8000/ex05/remove/
 
 
 ## ex06
+http://127.0.0.1:8000/ex06/init/
+http://127.0.0.1:8000/ex06/populate/
+http://127.0.0.1:8000/ex06/display/
+http://127.0.0.1:8000/ex06/remove/
+http://127.0.0.1:8000/ex06/update/
 
 ## ex07
 
