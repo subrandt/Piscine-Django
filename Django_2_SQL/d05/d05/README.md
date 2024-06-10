@@ -82,6 +82,7 @@ http://127.0.0.1:8000/ex06/remove/
 http://127.0.0.1:8000/ex06/update/
 
 ## ex07
+idem ex06 avec ORM
 
 ## ex08
 
