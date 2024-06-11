@@ -1,0 +1,16 @@
+<form method="POST">
+    {% csrf_token %}
+    <label for="min_date">Movies minimum release date:</label><br>
+    <input type="date" id="min_date" name="min_date"><br>
+    <label for="max_date">Movies maximum release date:</label><br>
+    <input type="date" id="max_date" name="max_date"><br>
+    <label for="diameter">Planet diameter greater than:</label><br>
+    <input type="number" id="diameter" name="diameter"><br>
+    <label for="gender">Character gender:</label><br>
+    <select id="gender" name="gender">
+        {% for gender in genders %}
+            <option value="{{ gender }}">{{ gender }}</option>
+        {% endfor %}
+    </select><br>
+    <input type="submit" value="Search">
+</form>

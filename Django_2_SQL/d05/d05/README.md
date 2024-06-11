@@ -95,3 +95,6 @@ python3 manage.py migrate
 python3 manage.py loaddata ex09_initial_data.json
 
 ## ex10
+python3 manage.py makemigrations ex09
+python3 manage.py migrate
+python manage.py loaddata ex10_initial_data.json

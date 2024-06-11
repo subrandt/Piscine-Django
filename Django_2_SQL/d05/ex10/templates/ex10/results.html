@@ -1,0 +1,11 @@
+{% if results %}
+    <ul>
+        {% for result in results %}
+            <li>
+                {{ result.name }} - {{ result.gender }} - {{ result.movies.title }} - {{ result.homeworld.name }} - {{ result.homeworld.diameter }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Nothing corresponding to your research</p>
+{% endif %}
