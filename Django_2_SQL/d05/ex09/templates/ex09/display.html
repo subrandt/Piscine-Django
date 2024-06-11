@@ -1,0 +1,14 @@
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Homeworld</th>
+        <th>Climate</th>
+    </tr>
+    {% for person in data %}
+    <tr>
+        <td>{{ person.name }}</td>
+        <td>{{ person.homeworld.name }}</td>
+        <td>{{ person.homeworld.climate }}</td>
+    </tr>
+    {% endfor %}
+</table>

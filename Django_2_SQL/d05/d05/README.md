@@ -85,7 +85,13 @@ http://127.0.0.1:8000/ex06/update/
 idem ex06 avec ORM
 
 ## ex08
+http://127.0.0.1:8000/ex06/init/
+http://127.0.0.1:8000/ex06/populate/
+http://127.0.0.1:8000/ex06/display/
 
 ## ex09
+python3 manage.py makemigrations ex09
+python3 manage.py migrate
+python3 manage.py loaddata ex09_initial_data.json
 
 ## ex10
