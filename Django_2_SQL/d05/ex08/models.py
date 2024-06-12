@@ -1,23 +1,27 @@
 from django.db import models
 
 class Planets(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=64, unique=True, null=False)
-    climate = models.CharField(max_length=128)
-    diameter = models.IntegerField()
-    orbital_period = models.IntegerField()
-    population = models.BigIntegerField()
-    rotation_period = models.IntegerField()
-    surface_water = models.FloatField()
-    terrain = models.CharField(max_length=128)
+    name = models.CharField(max_length=64, unique=True)
+    climate = models.CharField(max_length=255, null=True)
+    diameter = models.IntegerField(null=True)
+    orbital_period = models.IntegerField(null=True)
+    population = models.BigIntegerField(null=True)
+    rotation_period = models.IntegerField(null=True)
+    surface_water = models.FloatField(null=True)
+    terrain = models.CharField(max_length=255, null=True)
+
+    def __str__(self):
+        return self.name
 
 class People(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=64, unique=True, null=False)
-    birth_year = models.CharField(max_length=32)
+    name = models.CharField(max_length=64)
+    birth_year = models.CharField(max_length=32, null=True)
     gender = models.CharField(max_length=32)
-    eye_color = models.CharField(max_length=32)
-    hair_color = models.CharField(max_length=32)
-    height = models.IntegerField()
-    mass = models.FloatField()
-    homeworld = models.ForeignKey(Planets, on_delete=models.CASCADE, to_field='name')
+    eye_color = models.CharField(max_length=32, null=True)
+    hair_color = models.CharField(max_length=32, null=True)
+    height = models.IntegerField(null=True)
+    mass = models.FloatField(null=True)
+    homeworld = models.ForeignKey(Planets, on_delete=models.CASCADE, to_field='name', null=True)
+
+    def __str__(self):
+        return self.name

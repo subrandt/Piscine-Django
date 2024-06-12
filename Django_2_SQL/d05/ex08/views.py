@@ -1,7 +1,8 @@
+from django.db import connection, transaction
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.db import connection
 from django.views.decorators.csrf import csrf_exempt
+from psycopg2 import sql, errors
 import csv
 from io import StringIO
 
@@ -33,8 +34,8 @@ def init(request):
                     hair_color VARCHAR(32),
                     height INTEGER,
                     mass REAL,
-                    homeworld INTEGER,
-                    CONSTRAINT fk_homeworld FOREIGN KEY(homeworld) REFERENCES ex08_planets(id)
+                    homeworld VARCHAR(64),
+                    CONSTRAINT fk_homeworld FOREIGN KEY(homeworld) REFERENCES ex08_planets(name)
                 );
             """)
             return HttpResponse("OK")
@@ -42,59 +43,21 @@ def init(request):
             return HttpResponse(str(e))
 
 @csrf_exempt
+
 def populate(request):
     try:
         with connection.cursor() as cursor:
-            cursor.execute("DELETE FROM ex08_people")
-            cursor.execute("DELETE FROM ex08_planets")
-
-            # First, populate the ex08_planets table
+            cursor.execute("TRUNCATE TABLE ex08_planets, ex08_people RESTART IDENTITY CASCADE")
             with open('ex08/data/planets.csv', 'r') as f:
-                reader = csv.reader(f, delimiter='\t')
-                next(reader)  # Skip the header
-                data = []
-                for row in reader:
-                    data.append([convert_to_null(value) for value in row])
-                output = StringIO()
-                writer = csv.writer(output, delimiter='\t', quoting=csv.QUOTE_MINIMAL)
-                writer.writerows(data)
-                output.seek(0)
-                cursor.copy_from(output, 'ex08_planets', sep='\t', columns=('name', 'climate', 'diameter', 'orbital_period', 'population', 'rotation_period', 'surface_water', 'terrain'))
-
-            # Print the data for debugging
-            print(data)
-
-            # Create a dictionary mapping planet names to their IDs
-            cursor.execute("SELECT id, name FROM ex08_planets")
-            planet_ids = {name: id for id, name in cursor.fetchall()}
-
-            # Print the planet_ids to debug
-            print(planet_ids)
-
-            # Then, populate the ex08_people table
+                cursor.copy_from(f, 'ex08_planets', sep='\t', null='NULL', columns=('name', 'climate', 'diameter', 'orbital_period', 'population', 'rotation_period', 'surface_water', 'terrain'))
             with open('ex08/data/people.csv', 'r') as f:
-                reader = csv.reader(f, delimiter='\t')
-                next(reader)
-                data = []
-                for row in reader:
-                    # Replace the homeworld name with its ID if it exists in planet_ids, otherwise skip the row
-                    homeworld_id = planet_ids.get(row[-1])
-                    if homeworld_id is not None:
-                        row[-1] = homeworld_id
-                        data.append([convert_to_null(value) for value in row])
-                output = StringIO()
-                writer = csv.writer(output, delimiter='\t', quoting=csv.QUOTE_MINIMAL)
-                writer.writerows(data)
-                output.seek(0)
-                cursor.copy_from(output, 'ex08_people', sep='\t', columns=('name', 'birth_year', 'gender', 'eye_color', 'hair_color', 'height', 'mass', 'homeworld'))
-
-            # Print the data for debugging
-            # print(data)
-            
-            return HttpResponse("OK")
+                cursor.copy_from(f, 'ex08_people', sep='\t', null='NULL', columns=('name', 'birth_year', 'gender', 'eye_color', 'hair_color', 'height', 'mass', 'homeworld'))
+    except errors.UniqueViolation:
+        return HttpResponse("Error: Unique key violation")
     except Exception as e:
-        return HttpResponse(str(e))
-
+        return HttpResponse(f"Error: {e}")
+    
+    return HttpResponse("Planets OK<br>People OK")
 
 def display(request):
     with connection.cursor() as cursor:
@@ -102,7 +65,7 @@ def display(request):
             cursor.execute("""
                 SELECT people.name, planets.name, planets.climate
                 FROM ex08_people AS people
-                JOIN ex08_planets AS planets ON people.homeworld = planets.id
+                JOIN ex08_planets AS planets ON people.homeworld = planets.name
                 WHERE planets.climate LIKE '%windy%' OR planets.climate LIKE '%moderately windy%'
                 ORDER BY people.name ASC
             """)
@@ -110,3 +73,11 @@ def display(request):
             return render(request, 'ex08/display.html', {'rows': rows})
         except Exception as e:
             return HttpResponse("No data available")
+
+def debug(request):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT COUNT(*) FROM ex08_planets")
+        planet_count = cursor.fetchone()[0]
+        cursor.execute("SELECT COUNT(*) FROM ex08_people")
+        people_count = cursor.fetchone()[0]
+    return HttpResponse(f"Planets: {planet_count}, People: {people_count}")
