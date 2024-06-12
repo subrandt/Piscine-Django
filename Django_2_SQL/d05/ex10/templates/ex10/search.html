@@ -1,16 +1,49 @@
-<form method="POST">
+<form method="post" id="searchForm">
     {% csrf_token %}
-    <label for="min_date">Movies minimum release date:</label><br>
-    <input type="date" id="min_date" name="min_date"><br>
-    <label for="max_date">Movies maximum release date:</label><br>
-    <input type="date" id="max_date" name="max_date"><br>
-    <label for="diameter">Planet diameter greater than:</label><br>
-    <input type="number" id="diameter" name="diameter"><br>
-    <label for="gender">Character gender:</label><br>
-    <select id="gender" name="gender">
-        {% for gender in genders %}
-            <option value="{{ gender }}">{{ gender }}</option>
-        {% endfor %}
-    </select><br>
-    <input type="submit" value="Search">
+    <div>
+        <label for="min_date">Movies minimum release date:</label>
+        <input type="date" id="min_date" name="min_date">
+    </div>
+
+    <div>
+        <label for="max_date">Movies maximum release date:</label>
+        <input type="date" id="max_date" name="max_date">
+    </div>
+
+    <div>
+        <label for="diameter">Planet diameter greater than:</label>
+        <input type="number" id="diameter" name="diameter">
+    </div>
+
+    <div>
+        <label for="gender">Character gender:</label>
+        <select id="gender" name="gender">
+            <option value="">--- Select ---</option>
+            {% for gender in genders %}
+                <option value="{{ gender }}">{{ gender }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <input type="submit" value="Search" id="submitButton" disabled>
+    </div>
 </form>
+
+{% include 'ex10/results.html' %}
+
+
+<script>
+    document.getElementById('searchForm').addEventListener('input', function() {
+        var minDate = document.getElementById('min_date').value;
+        var maxDate = document.getElementById('max_date').value;
+        var diameter = document.getElementById('diameter').value;
+        var gender = document.getElementById('gender').value;
+
+        if (minDate && maxDate && diameter && gender) {
+            document.getElementById('submitButton').disabled = false;
+        } else {
+            document.getElementById('submitButton').disabled = true;
+        }
+    });
+</script>

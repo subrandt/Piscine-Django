@@ -85,9 +85,17 @@ http://127.0.0.1:8000/ex06/update/
 idem ex06 avec ORM
 
 ## ex08
-http://127.0.0.1:8000/ex06/init/
-http://127.0.0.1:8000/ex06/populate/
-http://127.0.0.1:8000/ex06/display/
+effacer la DB
+psql -h localhost -U djangouser -d djangotraining
+password secret
+drop table ex08_planets cascade;
+drop table ex08_people ;
+\dt pour afficher les tables
+\q pour quitter
+
+http://127.0.0.1:8000/ex08/init/
+http://127.0.0.1:8000/ex08/populate/
+http://127.0.0.1:8000/ex08/display/
 
 ## ex09
 python3 manage.py makemigrations ex09
