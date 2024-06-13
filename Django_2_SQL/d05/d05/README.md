@@ -104,12 +104,14 @@ http://127.0.0.1:8000/ex08/display/
 ## ex09
 python3 manage.py makemigrations ex09
 python3 manage.py migrate
+
 python3 manage.py loaddata ex09_initial_data.json
 http://127.0.0.1:8000/ex09/display/
 
 
 ## ex10
-python3 manage.py makemigrations ex09
+python3 manage.py makemigrations ex10
 python3 manage.py migrate
+
 python manage.py loaddata ex10_initial_data.json
 http://127.0.0.1:8000/ex10
