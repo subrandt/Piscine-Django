@@ -1,9 +1,11 @@
 {% if results %}
     <ul>
         {% for result in results %}
-            <li>
-                {{ result.name }} - {{ result.gender }} - {{ result.movies.title }} - {{ result.homeworld.name }} - {{ result.homeworld.diameter }}
-            </li>
+            {% for movie in result.movies.all %}
+                <li>
+                    {{ movie.title }} - {{ result.name }} - {{ result.gender }} - {{ result.homeworld.name }} - {{ result.homeworld.diameter }}
+                </li>
+            {% endfor %}
         {% endfor %}
     </ul>
 {% else %}

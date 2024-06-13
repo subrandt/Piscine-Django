@@ -10,28 +10,30 @@ def search(request):
         diameter = request.POST.get('diameter')
         gender = request.POST.get('gender')
 
-        # Check if min_date and max_date are empty
         if not min_date:
-            min_date = '1900-01-01'  # Or any other default value
+            min_date = '1900-01-01'
         if not max_date:
-            max_date = datetime.now().strftime('%Y-%m-%d')  # Default to today's date
+            max_date = datetime.now().strftime('%Y-%m-%d')
 
-        if diameter:  # Check if diameter is not None or empty string
-            diameter = int(diameter)  # Convert diameter to integer
+        if diameter:
+            diameter = int(diameter)
         else:
-            diameter = 0  # Default value if diameter is None or empty string
+            diameter = 0
 
         results = People.objects.filter(
             gender=gender,
             movies__release_date__range=[min_date, max_date],
             homeworld__diameter__gte=diameter
-        ).distinct()
+        ).select_related('homeworld').prefetch_related('movies').distinct()
 
-        # Save the results in the session
-        request.session['results'] = list(results.values())
+         # Store the IDs of the results in the session
+        request.session['result_ids'] = list(results.values_list('id', flat=True))
 
-    # Get the results from the session (if any) and immediately delete them
-    results = request.session.pop('results', [])
+    # Get the IDs from the session (if any) and immediately delete them
+    result_ids = request.session.pop('result_ids', [])
+
+    # Retrieve the People objects for the results
+    results = People.objects.filter(id__in=result_ids)
 
     genders = People.objects.values_list('gender', flat=True).distinct()
     return render(request, 'ex10/search.html', {'genders': genders, 'results': results})
