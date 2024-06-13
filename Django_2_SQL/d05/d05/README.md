@@ -83,6 +83,10 @@ http://127.0.0.1:8000/ex06/update/
 
 ## ex07
 idem ex06 avec ORM
+http://127.0.0.1:8000/ex07/populate/
+http://127.0.0.1:8000/ex07/display/
+http://127.0.0.1:8000/ex07/update/
+
 
 ## ex08
 effacer la DB
@@ -101,8 +105,11 @@ http://127.0.0.1:8000/ex08/display/
 python3 manage.py makemigrations ex09
 python3 manage.py migrate
 python3 manage.py loaddata ex09_initial_data.json
+http://127.0.0.1:8000/ex09/display/
+
 
 ## ex10
 python3 manage.py makemigrations ex09
 python3 manage.py migrate
 python manage.py loaddata ex10_initial_data.json
+http://127.0.0.1:8000/ex10
