@@ -1,4 +1,4 @@
-#!/home/sbrandt/Documents/sb/Piscine-Django/Training Python-Django - 3 Sessions/myenv/bin/python3
+#!/home/susanne/42/Piscine-Django/Training Python-Django - 3 Sessions/myenv/bin/python3
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 
