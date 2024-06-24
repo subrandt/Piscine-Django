@@ -5,4 +5,5 @@ from . import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('home/', lambda request: redirect('/', permanent=False)),
+    path('logout/', views.logout, name='logout_view'),
 ]
