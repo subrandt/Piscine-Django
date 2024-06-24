@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserRegistrationForm, UserLoginForm
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 
 def register(request):
@@ -34,7 +35,7 @@ def login_view(request):
         form = UserLoginForm()
     return render(request, 'users/login.html', {'form': form})
 
-@login_required(login_url='/login/')
+@login_required(login_url='users/login/')
 def logout_view(request):
     logout(request)
-    return redirect('users/login/')
+    return redirect( reverse('users:login') )

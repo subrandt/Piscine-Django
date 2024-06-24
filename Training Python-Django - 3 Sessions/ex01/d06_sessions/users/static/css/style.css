@@ -26,7 +26,7 @@ form {
 
 input[type="text"],
 input[type="password"] {
-    box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur/hauteur totale */
+    box-sizing: border-box;
     width: 100%;
     padding: 10px;
     margin: 10px 0;
@@ -50,41 +50,67 @@ button:hover {
 
 
 nav {
-    background-color: #fff; /* Arrière-plan blanc comme les formulaires */
-    border-radius: 8px; /* Bordures arrondies */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Ombre subtile */
-    margin: 10px auto; /* Centrer la navbar */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 10px auto;
     padding: 10px;
-    width: max-content; /* Adapter la largeur au contenu */
+    width: max-content;
 }
 
 nav ul {
-    list-style: none; /* Enlever les puces */
+    list-style: none;
     padding: 0;
     margin: 0;
-    display: flex; /* Affichage horizontal */
+    display: flex;
 }
 
 nav ul li {
-    margin-right: 20px; /* Espacement entre les éléments */
+    margin-right: 20px;
 }
 
 nav ul li:last-child {
-    margin-right: 0; /* Pas d'espacement à droite pour le dernier élément */
+    margin-right: 0;
 }
 
 nav a {
-    text-decoration: none; /* Enlever le soulignement */
-    color: #007bff; /* Couleur bleue comme le bouton */
+    text-decoration: none;
+    color: #007bff;
     font-weight: bold;
 }
 
 nav a:hover {
-    color: #0056b3; /* Couleur de survol comme le bouton */
+    color: #0056b3;
 }
 
 h2 {
-    color: #007bff; /* Couleur bleue pour correspondre au bouton */
-    text-align: center; /* Centrer le titre */
-    margin-bottom: 20px; /* Ajouter un espace sous le titre */
+    color: #007bff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.content-wrap {
+    min-height: 100%;
+    margin-bottom: -50px; 
+}
+
+.content-wrap:after {
+    content: "";
+    display: block;
+    height: 50px;
+}
+
+.footer, .content-wrap:after {
+    height: 50px;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.greeting {
+    color: #2a2a2a;
+    font-size: 1.2em;
+    margin: 10px 0; 
+    display: inline-block; /* Ou 'block' si vous voulez que le span prenne toute la largeur */
 }

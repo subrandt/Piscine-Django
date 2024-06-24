@@ -3,10 +3,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
-@login_required(login_url='/login/')
+@login_required(login_url='/users/login/')
 def home(request):
     return render(request, 'anonymous_sessions/home.html', {'username': request.user.username})
 
-def logout_view(request):
-    logout(request)
-    return redirect(request, '/users/login')
