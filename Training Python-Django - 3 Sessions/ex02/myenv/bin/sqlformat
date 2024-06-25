@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/home/subrandt/Documents/42/Piscine-Django/Training Python-Django - 3 Sessions/ex02/myenv/bin/python3" "$0" "$@"
+'''exec' "/home/susanne/42/Piscine-Django/Training Python-Django - 3 Sessions/ex02/myenv/bin/python3" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re
