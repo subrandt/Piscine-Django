@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'anonymous_sessions',
     'users.apps.UsersConfig',
+    'tips.apps.TipsConfig',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,21 @@ APPEND_SLASH = True
 
 
 NAMES = ['John', 'Jane', 'Bob', 'Alice', 'Charlie', 'David', 'Emily', 'Frank', 'Grace', 'Helen']
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'd06_sessions': { 
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

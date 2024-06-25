@@ -23,4 +23,5 @@ urlpatterns = [
     path('', include('anonymous_sessions.urls')),
     path('home/', lambda request: redirect('/', permanent=False)),
     path('users/', include('users.urls')),
+    path('tips/', include('tips.urls')),
 ]
