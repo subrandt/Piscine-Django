@@ -1,11 +1,13 @@
-<p>TEST</p>
-
-{% if form %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
+<p>Test1</p>
+{% if user.is_authenticated %}
+    {% if form %}
+    <form method="post">
+        <p>TEST</p>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    {% endif %}
 {% endif %}
 {% for tip in tips %}
 <div class="tip card mb-3">

@@ -149,10 +149,13 @@ LOGGING = {
         },
     },
     'loggers': {
-        'd06_sessions': { 
+        'django': {
             'handlers': ['console'],
             'level': 'DEBUG',
-            'propagate': True,
+        },
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
         },
     },
 }
