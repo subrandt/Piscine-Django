@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Life Pro Tips</h2>
+    <span class="greeting">Hello {{ username }}!</span>
+
+    {% include "tips_snipet.html" %}
+
+    <script>
+        var lastUsernameTime = new Date("{{ request.session.username_time }}");
+
+        function checkTimeAndUpdate() {
+            var currentTime = new Date();
+            var diff = currentTime - lastUsernameTime; 
+
+            if (diff > 42000) {
+                window.location.reload(true);
+            }
+        }
+
+        setInterval(checkTimeAndUpdate, 1000);
+    </script>
+{% endblock %}

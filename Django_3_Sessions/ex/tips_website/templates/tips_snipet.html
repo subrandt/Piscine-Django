@@ -1,0 +1,20 @@
+{% if user.is_authenticated %}
+    {% if form %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    {% endif %}
+{% endif %}
+{% for tip in tips %}
+<div class="tip card mb-3">
+    <div class="card-body">
+        <p class="card-text">{{ tip.content }}</p>
+        <p class="card-subtitle mb-2 text-muted">
+            By: <a href="{% url 'profile' tip.author.username %}">{{ tip.author }}</a>
+        </p>
+        <p class="card-text"><small class="text-muted">On: {{ tip.date|date:"F d, Y" }}</small></p>
+    </div>
+</div>
+{% endfor %}
