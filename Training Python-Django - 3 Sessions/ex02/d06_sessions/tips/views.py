@@ -2,14 +2,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Tip
 from .forms import TipForm
-import logging
+# import logging
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 @login_required(login_url='users:login')
 def tips_home(request):
     print("La fonction tips_home a été appelée.")
-    logger.debug("La fonction tips_home a été appelée.")
+    # logger.debug("La fonction tips_home a été appelée.")
     
     tips = Tip.objects.all().order_by('-date_created')
 
