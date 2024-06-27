@@ -2,22 +2,32 @@
 
 {% block content %}
     <h2>Life Pro Tips</h2>
-    <span class="greeting">Hello {{ username }}!</span>
 
-    {% include "tips_snipet.html" %}
+    {% if user.is_authenticated %}
+        <p>Session Authentifiée<br></p>
+        <span class="greeting">Hello {{ user.username }}!</span>
 
-    <script>
-        var lastUsernameTime = new Date("{{ request.session.username_time }}");
+    {% else %}
+        <p>Session Anonyme<br></p>
+        <span class="greeting">Hello {{ username }}!</span>
 
-        function checkTimeAndUpdate() {
-            var currentTime = new Date();
-            var diff = currentTime - lastUsernameTime; 
 
-            if (diff > 42000) {
-                window.location.reload(true);
+        <script>
+            var lastUsernameTime = new Date("{{ request.session.username_time }}");
+
+            function checkTimeAndUpdate() {
+                var currentTime = new Date();
+                var diff = currentTime - lastUsernameTime; 
+
+                if (diff > 42000) {
+                    window.location.reload(true);
+                }
             }
-        }
 
-        setInterval(checkTimeAndUpdate, 1000);
-    </script>
+            setInterval(checkTimeAndUpdate, 1000);
+        </script>
+    {% endif %}
+
+    <!-- {% include "tips_snipet.html" %} -->
+
 {% endblock %}
