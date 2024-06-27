@@ -1,5 +1,6 @@
 {% if user.is_authenticated %}
     {% if form %}
+    <h3>Share your tip</h3>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
@@ -7,14 +8,22 @@
     </form>
     {% endif %}
 {% endif %}
-{% for tip in tips %}
-<div class="tip card mb-3">
-    <div class="card-body">
-        <p class="card-text">{{ tip.content }}</p>
-        <p class="card-subtitle mb-2 text-muted">
-            By: <a href="{% url 'profile' tip.author.username %}">{{ tip.author }}</a>
-        </p>
-        <p class="card-text"><small class="text-muted">On: {{ tip.date|date:"F d, Y" }}</small></p>
-    </div>
-</div>
-{% endfor %}
+<h2>Tips:</h2>
+<table class="table-centered">
+    <thead>
+        <tr>
+            <th>Auteur</th>
+            <th>Date</th>
+            <th>Tip</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tip in tips %}
+        <tr>
+            <td>{{ tip.author }}</td>
+            <td>{{ tip.date|date:"F d, Y" }}</td>
+            <td>{{ tip.content }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

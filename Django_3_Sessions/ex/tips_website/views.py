@@ -6,13 +6,27 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import UserRegistrationForm, UserLoginForm
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-
+from .models import Tip
+from .forms import TipForm
 
 def home(request):
     current_time = datetime.now()
+    form = None  # Initialisez form à None par défaut
+
     if request.user.is_authenticated:
+        # Logique spécifique aux utilisateurs authentifiés
         username = request.user.username
+        form = TipForm()  # Créez le formulaire pour les utilisateurs authentifiés
+
+        if request.method == 'POST':
+            form = TipForm(request.POST)
+            if form.is_valid():
+                tip = form.save(commit=False)
+                tip.author = request.user
+                tip.save()
+                return redirect('home')
     else:
+        # Logique pour gérer les sessions anonymes
         if 'username' in request.session and 'username_time' in request.session:
             username_time = datetime.strptime(request.session['username_time'], '%Y-%m-%d %H:%M:%S.%f')
             if current_time - username_time > timedelta(seconds=42):
@@ -23,7 +37,11 @@ def home(request):
             request.session['username_time'] = current_time.strftime('%Y-%m-%d %H:%M:%S.%f')
         username = request.session['username']
 
-    return render(request, 'home.html', {'username': username})
+    # Récupération des tips pour les utilisateurs authentifiés ou anonymes
+    tips = Tip.objects.all().order_by('-date')
+
+    # Ajoutez 'is_authenticated' au contexte pour l'utiliser dans le template
+    return render(request, 'home.html', {'tips': tips, 'form': form, 'is_authenticated': request.user.is_authenticated})
 
 def register(request):
     if request.user.is_authenticated:

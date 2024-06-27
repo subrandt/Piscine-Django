@@ -114,3 +114,43 @@ body {
     margin: 10px 0; 
     display: inline-block; /* Ou 'block' si vous voulez que le span prenne toute la largeur */
 }
+
+#id_content {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #fff;
+    border-collapse: collapse;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+h3 {
+    text-align: center;
+    color: #333;
+    margin: 20px 0;
+}
+
+span, p {
+    display: block;
+    text-align: center;
+    margin: 10px auto;
+}
+
+.table-centered {
+    margin-left: auto;
+    margin-right: auto;
+}
