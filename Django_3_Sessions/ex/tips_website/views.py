@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 import random
 from datetime import datetime, timedelta
@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from .models import Tip
 from .forms import TipForm
+
 
 def home(request):
     current_time = datetime.now()
@@ -80,3 +81,32 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect( reverse('login'))
+
+@login_required
+def upvote_tip(request, tip_id):
+    tip = get_object_or_404(Tip, id=tip_id)
+    if request.user in tip.downvotes.all():
+        tip.downvotes.remove(request.user)
+    if request.user not in tip.upvotes.all():
+        tip.upvotes.add(request.user)
+    else:
+        tip.upvotes.remove(request.user)
+    return redirect('home')
+
+@login_required
+def downvote_tip(request, tip_id):
+    tip = get_object_or_404(Tip, id=tip_id)
+    if request.user in tip.upvotes.all():
+        tip.upvotes.remove(request.user)
+    if request.user not in tip.downvotes.all():
+        tip.downvotes.add(request.user)
+    else:
+        tip.downvotes.remove(request.user)
+    return redirect('home')
+
+@login_required
+def delete_tip(request, tip_id):
+    tip = get_object_or_404(Tip, id=tip_id)
+    if request.user == tip.author:
+        tip.delete()
+    return redirect('home')

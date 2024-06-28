@@ -23,6 +23,15 @@
             <td>{{ tip.author }}</td>
             <td>{{ tip.date|date:"F d, Y" }}</td>
             <td>{{ tip.content }}</td>
+            <td>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'upvote_tip' tip.id %}">Upvote</a> ({{ tip.upvotes.count }})
+                    <a href="{% url 'downvote_tip' tip.id %}">Downvote</a> ({{ tip.downvotes.count }})
+                    {% if tip.author == user %}
+                        <a href="{% url 'delete_tip' tip.id %}">Delete</a>
+                    {% endif %}
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </tbody>
