@@ -107,6 +107,6 @@ def downvote_tip(request, tip_id):
 @login_required
 def delete_tip(request, tip_id):
     tip = get_object_or_404(Tip, id=tip_id)
-    if request.user == tip.author:
+    if request.user == tip.author or request.user.is_superuser:
         tip.delete()
     return redirect('home')
