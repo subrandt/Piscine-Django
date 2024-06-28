@@ -1,4 +1,4 @@
-#!/home/susanne/42/Piscine-Django/Django_3_Sessions/myenv/bin/python3
+#!/home/subrandt/Documents/42/Piscine-Django/Django_3_Sessions/myenv/bin/python3
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 

@@ -16,7 +16,7 @@ def home(request):
     if request.user.is_authenticated:
         # Logique spécifique aux utilisateurs authentifiés
         username = request.user.username
-        form = TipForm()  # Créez le formulaire pour les utilisateurs authentifiés
+        form = TipForm()
 
         if request.method == 'POST':
             form = TipForm(request.POST)
@@ -26,13 +26,13 @@ def home(request):
                 tip.save()
                 return redirect('home')
     else:
-        # Logique pour gérer les sessions anonymes
         if 'username' in request.session and 'username_time' in request.session:
             username_time = datetime.strptime(request.session['username_time'], '%Y-%m-%d %H:%M:%S.%f')
             if current_time - username_time > timedelta(seconds=42):
                 request.session['username'] = random.choice(settings.NAMES)
                 request.session['username_time'] = current_time.strftime('%Y-%m-%d %H:%M:%S.%f')
         else:
+            print(random.choice(settings.NAMES))
             request.session['username'] = random.choice(settings.NAMES)
             request.session['username_time'] = current_time.strftime('%Y-%m-%d %H:%M:%S.%f')
         username = request.session['username']
@@ -40,8 +40,7 @@ def home(request):
     # Récupération des tips pour les utilisateurs authentifiés ou anonymes
     tips = Tip.objects.all().order_by('-date')
 
-    # Ajoutez 'is_authenticated' au contexte pour l'utiliser dans le template
-    return render(request, 'home.html', {'tips': tips, 'form': form, 'is_authenticated': request.user.is_authenticated})
+    return render(request, 'home.html', {'tips': tips, 'form': form, 'username': username})
 
 def register(request):
     if request.user.is_authenticated:
