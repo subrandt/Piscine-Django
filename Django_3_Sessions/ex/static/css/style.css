@@ -154,3 +154,7 @@ span, p {
     margin-left: auto;
     margin-right: auto;
 }
+
+a.action-link {
+    text-decoration: none !important;
+}
