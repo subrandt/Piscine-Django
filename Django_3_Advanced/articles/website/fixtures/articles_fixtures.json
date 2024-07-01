@@ -1,0 +1,76 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "username": "user1",
+            "password": "password1"
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "username": "user2",
+            "password": "password2"
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 3,
+        "fields": {
+            "username": "user3",
+            "password": "password3"
+        }
+    },
+    {
+        "model": "website.article",
+        "pk": 1,
+        "fields": {
+            "title": "Article 1",
+            "author": 1,
+            "synopsis": "Lorem ipsum dolor sit amet",
+            "content": "Full content of Article 1"
+        }
+    },
+    {
+        "model": "website.article",
+        "pk": 2,
+        "fields": {
+            "title": "Article 2",
+            "author": 1,
+            "synopsis": "Consectetur adipiscing elit",
+            "content": "Full content of Article 2"
+        }
+    },
+    {
+        "model": "website.article",
+        "pk": 3,
+        "fields": {
+            "title": "Article 3",
+            "author": 2,
+            "synopsis": "Sed do eiusmod tempor",
+            "content": "Full content of Article 3"
+        }
+    },
+    {
+        "model": "website.article",
+        "pk": 4,
+        "fields": {
+            "title": "Article 4",
+            "author": 2,
+            "synopsis": "Incididunt ut labore et dolore",
+            "content": "Full content of Article 4"
+        }
+    },
+    {
+        "model": "website.article",
+        "pk": 5,
+        "fields": {
+            "title": "Article 5",
+            "author": 3,
+            "synopsis": "Magna aliqua",
+            "content": "Full content of Article 5"
+        }
+    }
+]
