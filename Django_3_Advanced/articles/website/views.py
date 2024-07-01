@@ -7,10 +7,13 @@ class ArticleListView(ListView):
     template_name = 'articles.html'
     context_object_name = 'articles'
 
-class HomeRedirectView(RedirectView):
+class HomeView(RedirectView):
     pattern_name = 'articles'
 
-class CustomLoginView(LoginView):
+class UserLoginView(LoginView):
     template_name = 'login.html'
     redirect_authenticated_user = True
+    next_page = '/'
+
+class UserLogoutView(RedirectView):
     next_page = '/'
