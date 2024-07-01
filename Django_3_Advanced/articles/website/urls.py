@@ -1,12 +1,11 @@
 from django.urls import path
 from django.shortcuts import redirect
-from django.contrib import admin
 from . import views
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', HomeView.as_view, name='home'),
     path('home/', lambda request: redirect('/', permanent=False)),
-    # path('register/', views.register, name='register'),
-    # path('login/', views.login_view, name='login'),
-    # path('logout/', views.logout_view, name='logout'),
+    path('articles/', ArticleListView.as_view(), name='articles-list'),
+    path('login/', UserLoginView.as_view(), name='login'),
+    path('logout/', UserLogoutView.as_view(), name='logout'),
 ]
