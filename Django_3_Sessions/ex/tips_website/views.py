@@ -12,10 +12,9 @@ from .forms import TipForm
 
 def home(request):
     current_time = datetime.now()
-    form = None  # Initialisez form à None par défaut
+    form = None
 
     if request.user.is_authenticated:
-        # Logique spécifique aux utilisateurs authentifiés
         username = request.user.username
         form = TipForm()
 
@@ -38,7 +37,6 @@ def home(request):
             request.session['username_time'] = current_time.strftime('%Y-%m-%d %H:%M:%S.%f')
         username = request.session['username']
 
-    # Récupération des tips pour les utilisateurs authentifiés ou anonymes
     tips = Tip.objects.all().order_by('-date')
 
     return render(request, 'home.html', {'tips': tips, 'form': form, 'username': username})
