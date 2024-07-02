@@ -1,19 +1,20 @@
 from django.views.generic import ListView, RedirectView
 from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
 from .models import Article
 
-class ArticleListView(ListView):
+class Articles(ListView):
     model = Article
     template_name = 'articles.html'
     context_object_name = 'articles'
 
-class HomeView(RedirectView):
-    pattern_name = 'articles'
+class Home(RedirectView):
+    url = reverse_lazy('articles')
 
-class UserLoginView(LoginView):
+class Login(LoginView):
     template_name = 'login.html'
     redirect_authenticated_user = True
-    next_page = 'home'
+    next_page = reverse_lazy('home')
 
-class UserLogoutView(RedirectView):
-    next_page = 'home'
+class Logout(RedirectView):
+    next_page = reverse_lazy('home')   
