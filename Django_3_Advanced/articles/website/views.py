@@ -13,7 +13,7 @@ class HomeView(RedirectView):
 class UserLoginView(LoginView):
     template_name = 'login.html'
     redirect_authenticated_user = True
-    next_page = '/'
+    next_page = 'home'
 
 class UserLogoutView(RedirectView):
-    next_page = '/'
+    next_page = 'home'
