@@ -25,3 +25,19 @@ class Register(CreateView):
     form_class = UserCreationForm
     template_name = 'register.html'
     success_url = reverse_lazy('login')
+
+class ArticleDetail(ListView):
+    model = Article
+    template_name = 'article_detail.html'
+    context_object_name = 'article'
+
+    def get_queryset(self):
+        return Article.objects.filter(id=self.kwargs['article_id'])
+    
+class Favourites(ListView):
+    model = Article
+    template_name = 'favourites.html'
+    context_object_name = 'favourites'
+
+    def get_queryset(self):
+        return self.request.user.userfavouritearticle_set.all()
