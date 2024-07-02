@@ -1,5 +1,5 @@
 from django.views.generic import ListView, RedirectView
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
@@ -18,7 +18,7 @@ class Login(LoginView):
     redirect_authenticated_user = True
     next_page = reverse_lazy('home')
 
-class Logout(RedirectView):
+class Logout(LogoutView):
     next_page = reverse_lazy('home')
 
 class Register(CreateView):
