@@ -1,5 +1,7 @@
 from django.views.generic import ListView, RedirectView
 from django.contrib.auth.views import LoginView
+from django.views.generic.edit import CreateView
+from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from .models import Article
 
@@ -17,4 +19,9 @@ class Login(LoginView):
     next_page = reverse_lazy('home')
 
 class Logout(RedirectView):
-    next_page = reverse_lazy('home')   
+    next_page = reverse_lazy('home')
+
+class Register(CreateView):
+    form_class = UserCreationForm
+    template_name = 'register.html'
+    success_url = reverse_lazy('login')

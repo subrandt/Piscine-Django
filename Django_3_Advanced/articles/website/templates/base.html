@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ARTICLES{% endblock %}</title>
 </head>
 <body>
@@ -11,6 +13,7 @@
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'articles' %}">Articles</a></li>
                 <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
             </ul>
         </nav>
     </header>
@@ -21,7 +24,7 @@
     </main>
 
     <footer>
-        <p>&copy; 2023 Articles</p>
+        <p>&copy; 2024 Articles</p>
     </footer>
 </body>
 </html>
