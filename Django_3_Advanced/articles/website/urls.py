@@ -1,6 +1,6 @@
 from django.urls import path
 from django.shortcuts import redirect
-from .views import Home, Articles, Login, Logout, Register, ArticleDetail, Favourites
+from .views import Home, Articles, Login, Logout, Register, ArticleDetail, Favourites, AddToFavourites
 
 urlpatterns = [
     path('', Home.as_view(), name='home'),
@@ -10,4 +10,6 @@ urlpatterns = [
     path('register/', Register.as_view(), name='register'),
     path('articles/<int:pk>/', ArticleDetail.as_view(), name='article_detail'),
     path('favourites/', Favourites.as_view(), name='favourites'),
+    path('add_to_favourites/<int:article_id>/', AddToFavourites.as_view(), name='add_to_favourites'),
+
 ]

@@ -18,6 +18,7 @@
             <td>{{ article.created }}</td>
             <td>{{ article.synopsis }}</td>
             <td><a href="{% url 'article_detail' article.id %}">Voir les détails</a></td>
+            <td><a href="{% url 'add_to_favourites' article.id %}">Ajouter aux favoris</a></td>  
         </tr>
         {% endfor %}
     </table>

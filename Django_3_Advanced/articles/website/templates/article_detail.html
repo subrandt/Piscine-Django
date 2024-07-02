@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Détail de l'article{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <h2>{{ article.title }}</h2>
+        <p><strong>Auteur :</strong> {{ article.author }}</p>
+        <p><strong>Date de création :</strong> {{ article.created }}</p>
+        <p><strong>Synopsis :</strong> {{ article.synopsis }}</p>
+        <p><strong>Contenu :</strong> {{ article.content }}</p>
+    <a href="{% url 'articles' %}">Retour à la liste des articles</a>
+    <!-- <a href="{% url 'add_to_favourites' article.id %}">Ajouter aux favoris</a> -->
+    {% else %}
+        <p>Veuillez vous <a href="{% url 'login' %}">connecter</a> pour voir les détails de l'article.</p>
+    {% endif %}
+{% endblock %}

@@ -13,6 +13,7 @@
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'home' %}">Home</a></li>
                     <li><a href="{% url 'articles' %}">Articles</a></li>
+                    <li><a href="{% url 'favourites' %}">Favoris</a></li> 
                     <li>
                         <form id="logout-form" action="{% url 'logout' %}" method="post" style="display:none;">
                             {% csrf_token %}

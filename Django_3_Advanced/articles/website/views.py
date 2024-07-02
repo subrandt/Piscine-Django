@@ -2,6 +2,8 @@ from django.views.generic import ListView, RedirectView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from .models import Article
 
@@ -41,3 +43,11 @@ class Favourites(ListView):
 
     def get_queryset(self):
         return self.request.user.userfavouritearticle_set.all()
+
+class AddToFavourites(LoginRequiredMixin, RedirectView):
+    pattern_name = 'favourites'  # Nom du motif URL vers lequel rediriger après l'ajout
+
+    def get_redirect_url(self, *args, **kwargs):
+        article = get_object_or_404(Article, pk=kwargs['article_id'])
+        Favourites.objects.get_or_create(user=self.request.user, article=article)
+        return super().get_redirect_url(*args, **kwargs)
