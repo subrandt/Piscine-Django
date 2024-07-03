@@ -7,6 +7,7 @@ from .forms import RegisterForm, ArticleForm, UserFavouriteArticleForm
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from .models import Article, UserFavouriteArticle
+from django.http import HttpResponseRedirect
 
 
 class Articles(ListView):
@@ -40,37 +41,40 @@ class PublishArticle(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+
 class ArticleDetail(LoginRequiredMixin, DetailView):
     model = Article
     template_name = 'article_detail.html'
     context_object_name = 'article'
 
-
     def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
         user = request.user
-        article = get_object_or_404(Article, id=request.POST.get('article_id'))
+        article = self.object
         if not UserFavouriteArticle.objects.filter(user=user, article=article).exists():
             UserFavouriteArticle.objects.create(user=user, article=article)
-        return redirect('favorites')
+        return HttpResponseRedirect(self.get_success_url())
 
+    def get_success_url(self):
+        return reverse_lazy('article_detail', kwargs={'pk': self.object.pk})
     
-class Favourites(ListView):
+class Favourites(LoginRequiredMixin, ListView):
     model = Article
     template_name = 'favourites.html'
     context_object_name = 'favourites'
 
     def get_queryset(self):
-        return UserFavouriteArticle.objects.filter(user=self.request.user)
+        user_favourites = UserFavouriteArticle.objects.filter(user=self.request.user).values_list('article', flat=True)
+        return Article.objects.filter(id__in=user_favourites)
 
 class AddToFavourites(CreateView):
     model = UserFavouriteArticle
     form_class = UserFavouriteArticleForm
     template_name = 'add_to_favorites.html'
+    success_url = reverse_lazy('favourites')
+
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.instance.article = get_object_or_404(Article, id=self.request.POST.get('article_id'))
-        if UserFavouriteArticle.objects.filter(user=self.request.user, article=form.instance.article).exists():
-            self.template_name = 'already_in_favorites.html'
-        else:
-            response = super().form_valid(form)
-            return response
+        if UserFavouriteArticle.objects.filter(user=form.instance.user, article=form.instance.article).exists():
+            return redirect('favourites')
+        return super().form_valid(form)

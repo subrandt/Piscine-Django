@@ -1,18 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title %}Articles Favoris{% endblock %}
-
 {% block content %}
-    <h2>Articles Favoris</h2>
-    {% if user.is_authenticated %}
-        <ul>
-            {% for article in favourites %}
-                <li><a href="{% url 'article_detail' article.id %}">{{ article.title }}</a></li>
-            {% empty %}
-                <li>Aucun article favori trouvé.</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Veuillez vous <a href="{% url 'login' %}">connecter</a> pour accéder à vos articles favoris.</p>
-    {% endif %}
+<h2>Articles Favoris</h2>
+{% if user.is_authenticated %}
+    <table>
+        <tr>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Créé le</th>
+            <th>Synopsis</th>
+        </tr>
+        {% for article in favourites %}
+        <tr>
+            <td><a href="{% url 'article_detail' article.id %}">{{ article.title }}</a></td>
+            <td>{{ article.author }}</td>
+            <td>{{ article.created }}</td>
+            <td>{{ article.synopsis }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">Aucun article favori trouvé.</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>Veuillez vous <a href="{% url 'login' %}">connecter</a> pour accéder à vos articles favoris.</p>
+{% endif %}
 {% endblock %}

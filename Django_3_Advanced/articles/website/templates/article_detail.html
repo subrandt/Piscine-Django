@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 
-{% block title %}Détail de l'article{% endblock %}
-
 {% block content %}
     {% if user.is_authenticated %}
         <h2>{{ article.title }}</h2>
@@ -10,7 +8,10 @@
         <p><strong>Synopsis :</strong> {{ article.synopsis }}</p>
         <p><strong>Contenu :</strong> {{ article.content }}</p>
     <a href="{% url 'articles' %}">Retour à la liste des articles<br></a>
-    <a href="{% url 'add_to_favourites' article.id %}">Ajouter aux favoris<br></a>
+    <form action="{% url 'article_detail' article.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Ajouter aux favoris</button>
+    </form>
     {% else %}
         <p>Veuillez vous <a href="{% url 'login' %}">connecter</a> pour voir les détails de l'article.</p>
     {% endif %}
