@@ -78,3 +78,9 @@ class AddToFavourites(CreateView):
         if UserFavouriteArticle.objects.filter(user=form.instance.user, article=form.instance.article).exists():
             return redirect('favourites')
         return super().form_valid(form)
+    
+class LastArticles(ListView):
+    model = Article
+    template_name = 'last_articles.html'
+    context_object_name = 'articles'
+    queryset = Article.objects.order_by('-created')[:3]
