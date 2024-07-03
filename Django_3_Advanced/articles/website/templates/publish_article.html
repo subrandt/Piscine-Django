@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Publier un article{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <h2>Saisissez votre article:</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Publier</button>
+        </form>
+    {% else %}
+        <p>Veuillez vous <a href="{% url 'login' %}">connecter</a> pour publier un article.</p>
+    {% endif %}
+    <a href="{% url 'articles' %}">Retour à la liste des articles<br></a>
+    
+{% endblock %}

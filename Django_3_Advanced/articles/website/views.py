@@ -1,11 +1,13 @@
-from django.views.generic import ListView, RedirectView
+from django.views.generic import ListView, RedirectView, DetailView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+from .forms import RegisterForm, ArticleForm, UserFavouriteArticleForm
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from .models import Article
+from .models import Article, UserFavouriteArticle
+
 
 class Articles(ListView):
     model = Article
@@ -28,13 +30,29 @@ class Register(CreateView):
     template_name = 'register.html'
     success_url = reverse_lazy('login')
 
-class ArticleDetail(ListView):
+class PublishArticle(LoginRequiredMixin, CreateView):
+    model = Article
+    form_class = ArticleForm
+    template_name = 'publish_article.html'
+    success_url = reverse_lazy('articles')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+class ArticleDetail(LoginRequiredMixin, DetailView):
     model = Article
     template_name = 'article_detail.html'
     context_object_name = 'article'
 
-    def get_queryset(self):
-        return Article.objects.filter(id=self.kwargs['article_id'])
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        article = get_object_or_404(Article, id=request.POST.get('article_id'))
+        if not UserFavouriteArticle.objects.filter(user=user, article=article).exists():
+            UserFavouriteArticle.objects.create(user=user, article=article)
+        return redirect('favorites')
+
     
 class Favourites(ListView):
     model = Article
@@ -42,12 +60,17 @@ class Favourites(ListView):
     context_object_name = 'favourites'
 
     def get_queryset(self):
-        return self.request.user.userfavouritearticle_set.all()
+        return UserFavouriteArticleForm.objects.filter(user=self.request.user)
 
-class AddToFavourites(LoginRequiredMixin, RedirectView):
-    pattern_name = 'favourites'  # Nom du motif URL vers lequel rediriger après l'ajout
-
-    def get_redirect_url(self, *args, **kwargs):
-        article = get_object_or_404(Article, pk=kwargs['article_id'])
-        Favourites.objects.get_or_create(user=self.request.user, article=article)
-        return super().get_redirect_url(*args, **kwargs)
+class AddToFavourites(CreateView):
+    model = UserFavouriteArticle
+    form_class = UserFavouriteArticleForm
+    template_name = 'add_to_favorites.html'
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.article = get_object_or_404(Article, id=self.request.POST.get('article_id'))
+        if UserFavouriteArticle.objects.filter(user=self.request.user, article=form.instance.article).exists():
+            self.template_name = 'already_in_favorites.html'
+        else:
+            response = super().form_valid(form)
+            return response
