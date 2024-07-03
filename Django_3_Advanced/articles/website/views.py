@@ -60,7 +60,7 @@ class Favourites(ListView):
     context_object_name = 'favourites'
 
     def get_queryset(self):
-        return UserFavouriteArticleForm.objects.filter(user=self.request.user)
+        return UserFavouriteArticle.objects.filter(user=self.request.user)
 
 class AddToFavourites(CreateView):
     model = UserFavouriteArticle
