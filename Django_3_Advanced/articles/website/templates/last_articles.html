@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% load custom_filters %}
+
     <h2>Last articles</h2>
     <table>
         <tr>
@@ -14,7 +16,8 @@
             <td>{{ article.title }}</td>
             <td>{{ article.author }}</td>
             <td>{{ article.created }}</td>
-            <td>{{ article.synopsis }}</td>
+            <td>{{ article.synopsis|truncatechars:20 }}</td>
+            <td>{{ article.created|time_since_pub }}</td>
             {% if user.is_authenticated %}
                 <td><a href="{% url 'article_detail' article.id %}">Show details</a></td>
             {% endif %}    

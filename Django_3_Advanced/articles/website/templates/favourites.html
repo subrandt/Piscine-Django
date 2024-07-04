@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Articles Favoris</h2>
+{% load custom_filters %}
+
+<h2>Favourite Articles</h2>
 {% if user.is_authenticated %}
     <table>
         <tr>
@@ -9,13 +11,18 @@
             <th>Author</th>
             <th>Creation date</th>
             <th>Synopsis</th>
+            <th>Created</th>
         </tr>
         {% for article in favourites %}
         <tr>
-            <td><a href="{% url 'article_detail' article.id %}">{{ article.title }}</a></td>
+            <td>{{ article.title }}</td>
             <td>{{ article.author }}</td>
             <td>{{ article.created }}</td>
-            <td>{{ article.synopsis }}</td>
+            <td>{{ article.synopsis|truncatechars:20 }}</td>
+            <td>{{ article.created|time_since_pub }}</td>
+            {% if user.is_authenticated %}
+                <td><a href="{% url 'article_detail' article.id %}">Show details</a></td>
+            {% endif %}    
         </tr>
         {% empty %}
         <tr>

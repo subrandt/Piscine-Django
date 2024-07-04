@@ -3,8 +3,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import RegisterForm, ArticleForm, UserFavouriteArticleForm
-from django.shortcuts import get_object_or_404, redirect
+from .forms import ArticleForm, UserFavouriteArticleForm
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from .models import Article, UserFavouriteArticle
 from django.http import HttpResponseRedirect
@@ -14,6 +14,7 @@ class Articles(ListView):
     model = Article
     template_name = 'articles.html'
     context_object_name = 'articles'
+    queryset = Article.objects.order_by('-created')
 
 class Home(RedirectView):
     url = reverse_lazy('articles')

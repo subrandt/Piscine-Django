@@ -11,6 +11,8 @@
         <nav>
             <ul>
                 {% if user.is_authenticated %}
+                    <span>Logged as:  {{ user.username }}<br><br></span>
+
                     <li><a href="{% url 'home' %}">Home</a></li>
                     <li><a href="{% url 'last_articles' %}">Last Articles</a></li>
                     <li><a href="{% url 'publish_article' %}">Publication</a></li>
@@ -25,6 +27,14 @@
                     <li><a href="{% url 'home' %}">Home</a></li>
                     <li><a href="{% url 'articles' %}">Articles</a></li>
                     <li><a href="{% url 'login' %}">Login</a></li>
+                    <li>
+                        <form method="post" action="{% url 'login' %}">
+                            {% csrf_token %}
+                            <input type="text" name="username" placeholder="Username" required>
+                            <input type="password" name="password" placeholder="Password" required>
+                            <button type="submit">Login</button>
+                        </form>
+                    </li>
                     <li><a href="{% url 'register' %}">Register</a></li>
                 {% endif %}
             </ul>
@@ -36,8 +46,5 @@
         {% endblock %}
     </main>
 
-    <footer>
-        <!-- <p>&copy; 2024 Articles</p> -->
-    </footer>
 </body>
 </html>
