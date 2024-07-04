@@ -3,14 +3,14 @@
 {% block content %}
     {% if user.is_authenticated %}
         <h2>{{ article.title }}</h2>
-        <p><strong>Auteur :</strong> {{ article.author }}</p>
-        <p><strong>Date de création :</strong> {{ article.created }}</p>
+        <p><strong>Author :</strong> {{ article.author }}</p>
+        <p><strong>Creation date :</strong> {{ article.created }}</p>
         <p><strong>Synopsis :</strong> {{ article.synopsis }}</p>
-        <p><strong>Contenu :</strong> {{ article.content }}</p>
-    <a href="{% url 'articles' %}">Retour à la liste des articles<br></a>
+        <p><strong>Content :</strong> {{ article.content }}</p>
+    <a href="{% url 'articles' %}">Back to articles list<br></a>
     <form action="{% url 'article_detail' article.id %}" method="post">
         {% csrf_token %}
-        <button type="submit">Ajouter aux favoris</button>
+        <button type="submit">Add to favourites</button>
     </form>
     {% else %}
         <p>Veuillez vous <a href="{% url 'login' %}">connecter</a> pour voir les détails de l'article.</p>

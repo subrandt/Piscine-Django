@@ -18,7 +18,7 @@
             <td>{{ article.created }}</td>
             <td>{{ article.synopsis }}</td>
             {% if user.is_authenticated %}
-                <td><a href="{% url 'article_detail' article.id %}">Voir les détails</a></td>
+                <td><a href="{% url 'article_detail' article.id %}">Show details</a></td>
             {% endif %}    
         </tr>
         {% endfor %}
