@@ -16,4 +16,3 @@ source myenv/bin/activate
 
 # Install the dependencies
 pip install -r requirements.txt
-
