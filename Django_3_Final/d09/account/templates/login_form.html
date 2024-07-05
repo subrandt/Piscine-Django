@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+	<form id="loginForm">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit">Login</button>
+	</form>
+	<script>
+		$("#loginForm").submit(function(e) {
+			e.preventDefault();
+			$.ajax({
+				type: "POST",
+				url: "/account/",
+				data: {
+					csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+					username: $('#id_username').val(),
+					password: $('#id_password').val(),
+				},
+				success: function(data) {
+					if(data.logged_in) {
+						location.reload(); // Reload the page to show the logged-in state
+					} else {
+						alert("Login failed: " + JSON.stringify(data.errors));
+					}
+				}
+			});
+		});
+	</script>
+</body>
+</html>

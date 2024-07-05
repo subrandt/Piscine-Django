@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Logged In</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+	<p>Logged as {{ username }}</p>
+	<button id="logoutButton">Logout</button>
+	<script>
+		$("#logoutButton").click(function() {
+			$.ajax({
+				type: "POST",
+				url: "/account/",
+				data: {
+					csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+					logout: true,
+				},
+				success: function(data) {
+					if(data.logged_out) {
+						location.reload(); 
+					}
+				}
+			});
+		});
+	</script>
+</body>
+</html>
