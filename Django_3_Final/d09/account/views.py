@@ -18,7 +18,7 @@ def account_view(request):
 				return JsonResponse({'errors': form.errors})
 	else:
 		if request.user.is_authenticated:
-			return render(request, 'account/logged_in.html', {'username': request.user.username})
+			return render(request, 'logged_in.html', {'username': request.user.username})
 		else:
 			form = AuthenticationForm()
-			return render(request, 'account/login_form.html', {'form': form})
+			return render(request, 'login_form.html', {'form': form})
