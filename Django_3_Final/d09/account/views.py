@@ -24,7 +24,6 @@ def account_view(request):
 				return JsonResponse({'logged_in': True, 'username': user.username})
 			else:
 				# Ici, on gère l'échec de la connexion
-				# Vous pouvez ajuster le message ou la logique selon vos besoins
 				return JsonResponse({
 					'errors': form.errors,
 					'register_suggestion': 'Login failed. If you do not have an account, please register.'
