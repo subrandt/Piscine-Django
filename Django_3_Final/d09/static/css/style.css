@@ -158,3 +158,23 @@ span, p {
 a.action-link {
     text-decoration: none !important;
 }
+
+.form-signin {
+    max-width: 400px;
+    padding: 15px;
+    margin: auto;
+}
+.form-control {
+    margin-bottom: 10px;
+}
+.btn-block {
+    margin-top: 20px;
+}
+
+#logoutButton {
+    margin: auto;
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+}
