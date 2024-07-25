@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Logged In{% endblock %}
 
@@ -17,10 +18,11 @@
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
 		</form>
 	</div>
+	<script src="{% static 'js/getCookie.js' %}"></script>
 	<script>
 		$("#loginForm").submit(function(e) {
-			e.preventDefault();
-			$.ajax({
+			e.preventDefault(); // Prevent the form from submitting
+			$.ajax({ // Send the form data to the server
 				type: "POST",
 				url: "/account/",
 				data: {
@@ -29,10 +31,10 @@
 					password: $('#id_password').val(),
 				},
 				headers: {
-					"X-CSRFToken": getCookie("csrftoken") // Fonction pour récupérer le cookie csrftoken
+					"X-CSRFToken": getCookie("csrftoken") 
 				},
-				success: function(data) {
-					if(data.logged_in) {
+				success: function(data) { // Handle the server response
+					if(data.logged_in) { // If the login was successful
 						location.reload(); // Reload the page to show the logged-in state
 					} else {
 						alert("Login failed: " + JSON.stringify(data.errors));
@@ -40,20 +42,5 @@
 				}
 			});
 		});
-
-		function getCookie(name) {
-			let cookieValue = null;
-			if (document.cookie && document.cookie !== '') {
-				const cookies = document.cookie.split(';');
-				for (let i = 0; i < cookies.length; i++) {
-					const cookie = cookies[i].trim();
-					if (cookie.substring(0, name.length + 1) === (name + '=')) {
-						cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-						break;
-					}
-				}
-			}
-			return cookieValue;
-		}
 	</script>
 {% endblock %}
