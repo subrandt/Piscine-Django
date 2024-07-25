@@ -74,6 +74,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'd09.wsgi.application'
 
+# ASGI configuration
+# Indique à Django d'utiliser le fichier routing.py dans le dossier d09 pour la 
+# configuration ASGI, fonctionnalité asynchrone comme les WebSockets.
+ASGI_APPLICATION = 'd09.routing.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -134,7 +138,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Add a trailing slash to URLs
 APPEND_SLASH = True
 
-# ASGI configuration
-# Indique à Django d'utiliser le fichier routing.py dans le dossier d09 pour la 
-# configuration ASGI, fonctionnalité asynchrone comme les WebSockets.
-ASGI_APPLICATION = 'd09.routing.application'
