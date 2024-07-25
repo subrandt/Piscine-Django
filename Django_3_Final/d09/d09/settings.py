@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_bootstrap5',
     'account',
+    'chat',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -131,3 +133,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Add a trailing slash to URLs
 APPEND_SLASH = True
+
+# ASGI configuration
+# Indique à Django d'utiliser le fichier routing.py dans le dossier d09 pour la 
+# configuration ASGI, fonctionnalité asynchrone comme les WebSockets.
+ASGI_APPLICATION = 'd09.routing.application'
