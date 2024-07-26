@@ -9,8 +9,9 @@
 	);
 
 	chatSocket.onmessage = function(e) {
-		var data = JSON.parse(e.data);
-		document.querySelector('#chat-log').value += (data.message + '\n');
+		const data = JSON.parse(e.data);
+		document.querySelector('#chat-log').value += (data.message + '\n'); 
+		// ajouter le username avant le message
 	};
 
 	chatSocket.onclose = function(e) {
@@ -21,7 +22,9 @@
 		var messageInputDom = document.querySelector('#chat-message-input');
 		var message = messageInputDom.value;
 		chatSocket.send(JSON.stringify({
-			'message': message
+			'message': message,
+			'username': '{{ request.user.username }}' ,
+			'room': roomName,
 		}));
 		messageInputDom.value = '';
 	};
