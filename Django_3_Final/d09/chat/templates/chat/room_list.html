@@ -1,3 +1,4 @@
+<h1>Room List: </h1>
 {% for room in rooms %}
 	<a href="{% url 'room' room.name %}">{{ room.name }}</a><br>
 {% endfor %}
