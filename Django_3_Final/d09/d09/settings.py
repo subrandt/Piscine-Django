@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'd09.wsgi.application'
 # ASGI configuration
 # Indique à Django d'utiliser le fichier routing.py dans le dossier d09 pour la 
 # configuration ASGI, fonctionnalité asynchrone comme les WebSockets.
-ASGI_APPLICATION = 'd09.routing.application'
+ASGI_APPLICATION = 'd09.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
