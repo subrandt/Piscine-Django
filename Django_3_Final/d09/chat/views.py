@@ -11,7 +11,7 @@ def chat_room_list(request):
 
 @login_required
 def chat_room(request, room_name):
-	room = ChatRoom.objects.get(name=room_name)
-	messages = ChatMessage.objects.filter(room=room) 
+	chatroom = ChatRoom.objects.get(name=room_name)
+	messages = ChatMessage.objects.filter(room=chatroom)
 
-	return render(request, 'chat/room.html', {'room_name': room_name, 'messages': messages})
+	return render(request, 'chat/room.html', {'room_name': chatroom, 'messages': messages})

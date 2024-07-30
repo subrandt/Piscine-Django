@@ -1,12 +1,13 @@
+{% extends "base.html" %}
 
-<h1>You are in the Chat-Room :  {{ room_name }} </h1>
+{% block content %}
+<h1>You are in the Chat-Room: {{ room_name }} </h1>
 
 <div id="chat-messages">
     {% for message in messages %}
-            {{ message.user.username }}: {{ message.message_content }} <br>
+        {{ message.user.username }}: {{ message.message }} <br>
     {% endfor %}
 </div>
-
 
 <div id="chat-log"></div>
 <input id="chat-message-input" type="text" size="100">
@@ -44,4 +45,21 @@
         }));
         messageInputDom.value = '';
     };
+
+    $(window).on('beforeunload', function(){
+        chatSocket.send(JSON.stringify({
+            'message': '{{ request.user.username }} has left the chat.',
+            'username': '{{ request.user.username }}',
+            'room_name': roomName,
+        }));
+    });
+
+    chatSocket.onopen = function() {
+        chatSocket.send(JSON.stringify({
+            'message': '{{ request.user.username }} has joined the chat.',
+            'username': '{{ request.user.username }}',
+            'room_name': roomName,
+        }));
+    };
 </script>
+{% endblock %}
