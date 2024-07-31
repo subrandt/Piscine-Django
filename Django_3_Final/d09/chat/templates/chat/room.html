@@ -30,9 +30,12 @@
         console.error('Chat socket closed unexpectedly');
     };
 
-    document.querySelector('#chat-message-submit').onclick = function(e) {
+    function sendMessage() {
         var messageInputDom = document.querySelector('#chat-message-input');
         var message = messageInputDom.value;
+        if (message.trim() === "") {
+            return;
+        }
         console.log("Sending message:", {
             'message': message,
             'username': '{{ request.user.username }}',
@@ -44,7 +47,17 @@
             'room_name': roomName,
         }));
         messageInputDom.value = '';
+    }
+
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        sendMessage();
     };
+
+    document.querySelector('#chat-message-input').addEventListener('keyup', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
 
     $(window).on('beforeunload', function(){
         chatSocket.send(JSON.stringify({

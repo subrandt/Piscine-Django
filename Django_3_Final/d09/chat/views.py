@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import ChatRoom, ChatMessage
 
@@ -11,7 +11,7 @@ def chat_room_list(request):
 
 @login_required
 def chat_room(request, room_name):
-	chatroom = ChatRoom.objects.get(name=room_name)
+	chatroom = get_object_or_404(ChatRoom, name=room_name)
 	messages = ChatMessage.objects.filter(room=chatroom)
 
 	return render(request, 'chat/room.html', {'room_name': chatroom, 'messages': messages})
