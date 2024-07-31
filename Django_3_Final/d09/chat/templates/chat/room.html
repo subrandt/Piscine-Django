@@ -1,7 +1,10 @@
+<!-- room.html -->
 {% extends "base.html" %}
 
 {% block content %}
-<h1>You are in the Chat-Room: {{ room_name }} </h1>
+<!-- ajouter des liens directs vers les autres chatrooms -->
+
+<h1>You are in the Chat-Room: {{ room_name }}</h1>
 
 <div id="chat-messages">
     {% for message in messages %}
@@ -23,7 +26,13 @@
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
         console.log("Received message:", data);
-        document.querySelector('#chat-log').innerHTML += (data.username + ': ' + data.message + '<br>'); 
+
+        var chatLogDiv = document.querySelector('#chat-log');
+        if (data.type === 'joinChannel' || data.type === 'leaveChannel') {
+            chatLogDiv.innerHTML += ('<i>' + data.message + '</i><br>');
+        } else {
+            chatLogDiv.innerHTML += (data.username + ': ' + data.message + '<br>');
+        }
     };
 
     chatSocket.onclose = function(e) {
@@ -34,17 +43,19 @@
         var messageInputDom = document.querySelector('#chat-message-input');
         var message = messageInputDom.value;
         if (message.trim() === "") {
-            return;
+            return; // Don't send empty messages.
         }
         console.log("Sending message:", {
             'message': message,
             'username': '{{ request.user.username }}',
-            'room_name': roomName
+            'room_name': roomName,
+            'type': 'sendMessage'
         });
         chatSocket.send(JSON.stringify({
             'message': message,
             'username': '{{ request.user.username }}',
             'room_name': roomName,
+            'type': 'sendMessage'
         }));
         messageInputDom.value = '';
     }
@@ -64,6 +75,7 @@
             'message': '{{ request.user.username }} has left the chat.',
             'username': '{{ request.user.username }}',
             'room_name': roomName,
+            'type': 'leaveChannel'
         }));
     });
 
@@ -72,6 +84,7 @@
             'message': '{{ request.user.username }} has joined the chat.',
             'username': '{{ request.user.username }}',
             'room_name': roomName,
+            'type': 'joinChannel'
         }));
     };
 </script>

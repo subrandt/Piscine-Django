@@ -12,6 +12,6 @@ def chat_room_list(request):
 @login_required
 def chat_room(request, room_name):
 	chatroom = get_object_or_404(ChatRoom, name=room_name)
-	messages = ChatMessage.objects.filter(room=chatroom)
+	messages = ChatMessage.objects.filter(room=chatroom).order_by('timestamp')[:3][::-1]
 
 	return render(request, 'chat/room.html', {'room_name': chatroom, 'messages': messages})
