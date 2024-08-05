@@ -1,51 +1,73 @@
-<!-- room.html -->
+<!-- chat/templates/chat/room.html -->
 {% extends "base.html" %}
 
 {% block content %}
-<!-- ajouter des liens directs vers les autres chatrooms -->
-
 <h1>You are in the Chat-Room: {{ room_name }}</h1>
 
 <div id="chat-messages">
     {% for message in messages %}
-        {{ message.user.username }}: {{ message.message }} <br>
+        {% if message.message_type == 'join' or message.message_type == 'leave' %}
+            <i>{{ message.message }}</i><br>
+        {% else %}
+            <strong>{{ message.user.username }}</strong>: {{ message.message }}<br>
+        {% endif %}
     {% endfor %}
 </div>
 
 <div id="chat-log"></div>
 <input id="chat-message-input" type="text" size="100">
-<input id="chat-message-submit" type="button" value="Send">
+<input id="chat-message-submit" type="button" value="Envoyer">
 
 <script>
     var roomName = "{{ room_name }}";
+    var chatSocket;
 
-    var chatSocket = new WebSocket(
-        'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
-    );
+    // Vérifiez si la page a été rechargée
+    var isPageReload = sessionStorage.getItem('isPageReload') === 'true';
 
-    chatSocket.onmessage = function(e) {
-        const data = JSON.parse(e.data);
-        console.log("Received message:", data);
+    function connectWebSocket() {
+        chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
+        );
 
-        var chatLogDiv = document.querySelector('#chat-log');
-        if (data.type === 'joinChannel' || data.type === 'leaveChannel') {
-            chatLogDiv.innerHTML += ('<i>' + data.message + '</i><br>');
-        } else {
-            chatLogDiv.innerHTML += (data.username + ': ' + data.message + '<br>');
-        }
-    };
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            console.log("Message reçu:", data);
 
-    chatSocket.onclose = function(e) {
-        console.error('Chat socket closed unexpectedly');
-    };
+            var chatLogDiv = document.querySelector('#chat-log');
+            if (data.type === 'joinChannel' || data.type === 'leaveChannel') {
+                chatLogDiv.innerHTML += ('<i>' + data.message + '</i><br>');
+            } else {
+                chatLogDiv.innerHTML += ('<strong>' + data.username + '</strong>: ' + data.message + '<br>');
+            }
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Le socket de chat s\'est fermé de manière inattendue');
+        };
+
+        chatSocket.onopen = function() {
+            // Envoyer le message de jointure uniquement si ce n'est pas un rechargement de la page
+            if (!isPageReload) {
+                chatSocket.send(JSON.stringify({
+                    'message': '{{ request.user.username }} a rejoint le salon.',
+                    'username': '{{ request.user.username }}',
+                    'room_name': roomName,
+                    'type': 'joinChannel'
+                }));
+            }
+        };
+    }
+
+    connectWebSocket();
 
     function sendMessage() {
         var messageInputDom = document.querySelector('#chat-message-input');
         var message = messageInputDom.value;
         if (message.trim() === "") {
-            return; // Don't send empty messages.
+            return; // Ne pas envoyer de messages vides.
         }
-        console.log("Sending message:", {
+        console.log("Envoi du message:", {
             'message': message,
             'username': '{{ request.user.username }}',
             'room_name': roomName,
@@ -70,22 +92,23 @@
         }
     });
 
-    $(window).on('beforeunload', function(){
+    window.addEventListener('beforeunload', function(){
         chatSocket.send(JSON.stringify({
-            'message': '{{ request.user.username }} has left the chat.',
+            'message': '{{ request.user.username }} a quitté le salon.',
             'username': '{{ request.user.username }}',
             'room_name': roomName,
             'type': 'leaveChannel'
         }));
+
+        // Définir un indicateur pour indiquer que la page est en train d'être rechargée
+        sessionStorage.setItem('isPageReload', 'true');
     });
 
-    chatSocket.onopen = function() {
-        chatSocket.send(JSON.stringify({
-            'message': '{{ request.user.username }} has joined the chat.',
-            'username': '{{ request.user.username }}',
-            'room_name': roomName,
-            'type': 'joinChannel'
-        }));
-    };
+    // Réinitialiser l'indicateur de rechargement de la page après un court délai pour gérer la fermeture de l'onglet
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            sessionStorage.setItem('isPageReload', 'false');
+        }, 100);
+    });
 </script>
 {% endblock %}
