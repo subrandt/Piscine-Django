@@ -1,4 +1,5 @@
 Django==5.0.6
 django-bootstrap5
 channels
-uvicorn[standard]
+daphne
+whitenoise

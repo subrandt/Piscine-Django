@@ -1,29 +1,30 @@
-<!-- chat/templates/chat/room.html -->
 {% extends "base.html" %}
 
 {% block content %}
 <h1>You are in the Chat-Room: {{ room_name }}</h1>
 
-<div id="chat-messages">
-    {% for message in messages %}
-        {% if message.message_type == 'join' or message.message_type == 'leave' %}
-            <i>{{ message.message }}</i><br>
-        {% else %}
-            <strong>{{ message.user.username }}</strong>: {{ message.message }}<br>
-        {% endif %}
-    {% endfor %}
+<div id="chat-container">
+    <div id="chat-messages">
+        {% for message in messages %}
+            <strong>{{ message.user.username }}</strong>: {{ message.message }} <br>
+        {% endfor %}
+    </div>
+
+    <div id="user-list">
+        <h3>Connected Users:</h3>
+        <ul id="user-list-ul">
+            <!-- Liste des utilisateurs connectés -->
+        </ul>
+    </div>
 </div>
 
 <div id="chat-log"></div>
 <input id="chat-message-input" type="text" size="100">
-<input id="chat-message-submit" type="button" value="Envoyer">
+<input id="chat-message-submit" type="button" value="Send">
 
 <script>
     var roomName = "{{ room_name }}";
     var chatSocket;
-
-    // Vérifiez si la page a été rechargée
-    var isPageReload = sessionStorage.getItem('isPageReload') === 'true';
 
     function connectWebSocket() {
         chatSocket = new WebSocket(
@@ -32,34 +33,31 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            console.log("Message reçu:", data);
+            console.log("Received message:", data);
 
             var chatLogDiv = document.querySelector('#chat-log');
             if (data.type === 'joinChannel' || data.type === 'leaveChannel') {
                 chatLogDiv.innerHTML += ('<i>' + data.message + '</i><br>');
+            } else if (data.type === 'update_users_list') {
+                updateUserList(data.users);
             } else {
-                chatLogDiv.innerHTML += ('<strong>' + data.username + '</strong>: ' + data.message + '<br>');
+                chatLogDiv.innerHTML += (data.username + ': ' + data.message + '<br>');
             }
         };
 
         chatSocket.onclose = function(e) {
-            console.error('Le socket de chat s\'est fermé de manière inattendue');
+            console.error('Chat socket closed unexpectedly');
         };
 
         chatSocket.onopen = function() {
-            // Envoyer le message de jointure uniquement si ce n'est pas un rechargement de la page
-            if (!isPageReload) {
-                chatSocket.send(JSON.stringify({
-                    'message': '{{ request.user.username }} a rejoint le salon.',
-                    'username': '{{ request.user.username }}',
-                    'room_name': roomName,
-                    'type': 'joinChannel'
-                }));
-            }
+            chatSocket.send(JSON.stringify({
+                'message': '{{ request.user.username }} has joined the chat.',
+                'username': '{{ request.user.username }}',
+                'room_name': roomName,
+                'type': 'joinChannel'
+            }));
         };
     }
-
-    connectWebSocket();
 
     function sendMessage() {
         var messageInputDom = document.querySelector('#chat-message-input');
@@ -67,12 +65,6 @@
         if (message.trim() === "") {
             return; // Ne pas envoyer de messages vides.
         }
-        console.log("Envoi du message:", {
-            'message': message,
-            'username': '{{ request.user.username }}',
-            'room_name': roomName,
-            'type': 'sendMessage'
-        });
         chatSocket.send(JSON.stringify({
             'message': message,
             'username': '{{ request.user.username }}',
@@ -94,21 +86,23 @@
 
     window.addEventListener('beforeunload', function(){
         chatSocket.send(JSON.stringify({
-            'message': '{{ request.user.username }} a quitté le salon.',
+            'message': '{{ request.user.username }} has left the chat.',
             'username': '{{ request.user.username }}',
             'room_name': roomName,
             'type': 'leaveChannel'
         }));
-
-        // Définir un indicateur pour indiquer que la page est en train d'être rechargée
-        sessionStorage.setItem('isPageReload', 'true');
     });
 
-    // Réinitialiser l'indicateur de rechargement de la page après un court délai pour gérer la fermeture de l'onglet
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            sessionStorage.setItem('isPageReload', 'false');
-        }, 100);
-    });
+    function updateUserList(users) {
+        var userListUl = document.querySelector('#user-list-ul');
+        userListUl.innerHTML = ''; // Clear the current list
+        users.forEach(function(user) {
+            var li = document.createElement('li');
+            li.textContent = user;
+            userListUl.appendChild(li);
+        });
+    }
+
+    connectWebSocket();
 </script>
 {% endblock %}
