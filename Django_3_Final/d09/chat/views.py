@@ -23,7 +23,7 @@ def chat_room(request, room_name):
     # Charger les 3 derniers messages utilisateur et le message de jointure
     if joined_at:
         recent_messages = ChatMessage.objects.filter(room=chatroom, timestamp__lt=joined_at, message_type='user').order_by('-timestamp')[:3][::-1]
-        join_message = f'{request.user.username} a rejoint le salon.'
+        join_message = f'{request.user.username} has joined the chat.'
         messages = list(recent_messages) + [{'user': request.user, 'message': join_message, 'message_type': 'join', 'timestamp': joined_at}]
     else:
         messages = ChatMessage.objects.filter(room=chatroom).order_by('-timestamp')[:3][::-1]
