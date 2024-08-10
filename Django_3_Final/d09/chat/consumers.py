@@ -18,11 +18,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
             await self.accept()
             await self.send_user_list()
+
+            join_message = f'{self.scope["user"].username} has joined the chat'
+            await self.create_chat_message(self.scope['user'], room, join_message, 'join')
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
                     'type': 'chat_message',
-                    'message': f'{self.scope["user"].username} has joined the chat'
+                    'message': join_message,
+                    'message_type': 'join',
+                    'user': self.scope['user'].username
                 }
             )
         else:
@@ -33,6 +38,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             room = await self.get_room(self.room_name)
             await self.remove_user_from_room(self.scope['user'], room)
 
+            leave_message = f'{self.scope["user"].username} has left the chat'
+            await self.create_chat_message(self.scope['user'], room, leave_message, 'leave')
             await self.channel_layer.group_discard(
                 self.room_group_name,
                 self.channel_name
@@ -41,7 +48,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 self.room_group_name,
                 {
                     'type': 'chat_message',
-                    'message': f'{self.scope["user"].username} has left the chat'
+                    'message': leave_message,
+                    'message_type': 'leave',
+                    'user': self.scope['user'].username
                 }
             )
 
@@ -50,20 +59,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
         message = text_data_json.get('message')
 
         room = await self.get_room(self.room_name)
-        await self.create_chat_message(self.scope['user'], room, message)
+        await self.create_chat_message(self.scope['user'], room, message, 'user')
 
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': message,
+                'message_type': 'user',
+                'user': self.scope['user'].username
             }
         )
 
     async def chat_message(self, event):
         message = event['message']
+        message_type = event['message_type']
+        user = event['user']
         await self.send(text_data=json.dumps({
-            'message': message
+            'message': message,
+            'message_type': message_type,
+            'user': user
         }))
 
     async def send_user_list(self):
@@ -99,8 +114,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         ChatRoomUser.objects.filter(user=user, room=room).delete()
 
     @database_sync_to_async
-    def create_chat_message(self, user, room, message):
-        ChatMessage.objects.create(user=user, room=room, message=message)
+    def create_chat_message(self, user, room, message, message_type):
+        ChatMessage.objects.create(user=user, room=room, message=message, message_type=message_type)
 
     @database_sync_to_async
     def get_users_in_room(self, room):
