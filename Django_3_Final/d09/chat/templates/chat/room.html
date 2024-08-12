@@ -47,30 +47,27 @@
             console.log("Received message:", data);
 
             var chatLogDiv = document.querySelector('#chat-log');
-            if (data.type === 'joinChannel' || data.type === 'leaveChannel') {
-                chatLogDiv.innerHTML += ('<i>' + data.message + '</i><br>');
-            } else if (data.type === 'update_users_list') {
+            if (data.message_type === 'join' || data.message_type === 'leave') {
+                chatLogDiv.innerHTML += ('<i>' + data.user + ': ' + data.message + '</i><br>');
+            } else if (data.message_type === 'update_users_list') {
                 updateUserList(data.users);
             } else {
-                chatLogDiv.innerHTML += (data.username + ': ' + data.message + '<br>');
+                chatLogDiv.innerHTML += (data.user + ': ' + data.message + '<br>');
             }
 
             // Scroll to the bottom of the chat log
             chatLogDiv.scrollTop = chatLogDiv.scrollHeight;
         };
 
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
-
         chatSocket.onopen = function() {
             chatSocket.send(JSON.stringify({
-                'message': '{{ request.user.username }} has joined the chat.',
+                'message': ' has joined the chat.',
                 'username': '{{ request.user.username }}',
                 'room_name': roomName,
-                'type': 'joinChannel'
+                'message_type': 'join'
             }));
         };
+
     }
 
     function sendMessage() {
@@ -100,10 +97,10 @@
 
     window.addEventListener('beforeunload', function(){
         chatSocket.send(JSON.stringify({
-            'message': '{{ request.user.username }} has left the chat.',
+            'message': ' has left the chat.',
             'username': '{{ request.user.username }}',
             'room_name': roomName,
-            'type': 'leaveChannel'
+            'type': 'leave'
         }));
     });
 

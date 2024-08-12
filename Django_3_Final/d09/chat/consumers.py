@@ -19,7 +19,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.accept()
             await self.send_user_list()
 
-            join_message = f'{self.scope["user"].username} has joined the chat'
+            join_message = f' has joined the chat'
             await self.create_chat_message(self.scope['user'], room, join_message, 'join')
             await self.channel_layer.group_send(
                 self.room_group_name,
@@ -38,7 +38,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             room = await self.get_room(self.room_name)
             await self.remove_user_from_room(self.scope['user'], room)
 
-            leave_message = f'{self.scope["user"].username} has left the chat'
+            leave_message = f' has left the chat'
             await self.create_chat_message(self.scope['user'], room, leave_message, 'leave')
             await self.channel_layer.group_discard(
                 self.room_group_name,
@@ -74,7 +74,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
         message = event['message']
         message_type = event['message_type']
-        user = event['user']
+        user = event.get('user', 'Unknown')  # Fallback to avoid 'undefined'
         await self.send(text_data=json.dumps({
             'message': message,
             'message_type': message_type,
@@ -100,6 +100,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'type': 'update_users_list',
             'users': users
         }))
+
 
     @database_sync_to_async
     def get_room(self, room_name):
