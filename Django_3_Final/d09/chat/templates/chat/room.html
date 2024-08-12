@@ -60,12 +60,12 @@
         };
 
         chatSocket.onopen = function() {
-            chatSocket.send(JSON.stringify({
-                'message': ' has joined the chat.',
-                'username': '{{ request.user.username }}',
-                'room_name': roomName,
-                'message_type': 'join'
-            }));
+            // chatSocket.send(JSON.stringify({
+            //     'message': ' has joined the chat.',
+            //     'username': '{{ request.user.username }}',
+            //     'room_name': roomName,
+            //     'message_type': 'join'
+            // }));
         };
 
     }
@@ -96,12 +96,12 @@
     });
 
     window.addEventListener('beforeunload', function(){
-        chatSocket.send(JSON.stringify({
-            'message': ' has left the chat.',
-            'username': '{{ request.user.username }}',
-            'room_name': roomName,
-            'type': 'leave'
-        }));
+        // chatSocket.send(JSON.stringify({
+        //     'message': ' has left the chat.',
+        //     'username': '{{ request.user.username }}',
+        //     'room_name': roomName,
+        //     'type': 'leave'
+        // }));
     });
 
     function updateUserList(users) {
