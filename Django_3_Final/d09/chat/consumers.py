@@ -44,6 +44,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 self.room_group_name,
                 self.channel_name
             )
+            await self.send_user_list()  # Update user list after a user leaves
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
@@ -89,12 +90,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_send(
             self.room_group_name,
             {
-                'type': 'update_user_list',
+                'type': 'update_users_list',
                 'users': users
             }
         )
 
-    async def update_user_list(self, event):
+    async def update_users_list(self, event):
         users = event['users']
         await self.send(text_data=json.dumps({
             'type': 'update_users_list',
