@@ -9,7 +9,7 @@ if [[ "$VIRTUAL_ENV" != "" ]]; then
 fi
 
 # Remove the virtual environment
-rm -rf virtualenv
+rm -rf myenv
 
 # Clean message
 echo "Virtual environment deactivated and removed"
