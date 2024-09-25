@@ -15,7 +15,7 @@
 		document.getElementById("logoutButton").addEventListener("click", function() {
 			src="{% static 'js/getCookie.js' %}"
 	
-			const csrftoken = getCookie('csrftoken'); // Assurez-vous que le nom du cookie est correct
+			const csrftoken = getCookie('csrftoken');
 	
 			fetch("/account/", {
 				method: "POST",

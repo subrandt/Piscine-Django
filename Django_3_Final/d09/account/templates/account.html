@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div id="login-section" style="{% if user.is_authenticated %}display: none{% endif %}">
+        <form method="post" id="loginForm" class="form-signin">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="id_username">Username</label>
+                <input type="text" id="id_username" name="username" class="form-control" required autofocus>
+            </div>
+            <div class="form-group mb-3">
+                <label for="id_password">Password</label>
+                <input type="password" id="id_password" name="password" class="form-control" required>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        </form>
+        <div id="error-messages" class="text-danger"></div>
+    </div>
+
+    <div id="logged-in-section" style="{% if not user.is_authenticated %}display: none{% endif %}">
+        <p>Logged as {{ user.username }}</p>
+        <button id="logoutButton" class="btn btn-primary btn-block" type="button">Logout</button>
+    </div>
+</div>
+
+<script src="{% static 'js/getCookie.js' %}"></script>
+<script>
+    // Login form submission
+    $("#loginForm").submit(function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "/account/",
+            data: {
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                username: $('#id_username').val(),
+                password: $('#id_password').val(),
+            },
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken")
+            },
+            success: function(data) {
+                if (data.logged_in) {
+                    $("#login-section").hide();
+                    $("#logged-in-section").show();
+                    $("#logged-in-section p").text("Logged as " + data.username);
+                } else {
+                    $("#error-messages").text("Login failed: " + JSON.stringify(data.errors));
+                }
+            }
+        });
+    });
+
+    // Logout button click
+    $("#logoutButton").click(function() {
+        $.ajax({
+            type: "POST",
+            url: "/account/",
+            data: {
+                csrfmiddlewaretoken: getCookie('csrftoken'),
+                logout: true,
+            },
+            success: function(data) {
+                if (data.logged_out) {
+                    $("#logged-in-section").hide();
+                    $("#login-section").show();
+                    $("#error-messages").empty();
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
