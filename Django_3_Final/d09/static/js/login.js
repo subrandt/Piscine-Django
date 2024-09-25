@@ -7,7 +7,7 @@
                     <span class="nav-link">Welcome, ${username}</span>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'room_list' %}">Chat Room List</a>
+                    <a class="nav-link" href="${urls.roomList}">Chat Room List</a>
                 </li>
                 <li class="nav-item">
                     <button id="navbarLogoutButton" class="btn btn-link nav-link" type="button">Logout</button>
