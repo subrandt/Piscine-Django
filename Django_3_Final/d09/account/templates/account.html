@@ -13,6 +13,7 @@
 
     <!-- Login Form -->
     <form id="loginForm" style="display: none;">
+        <div class="error-message text-danger text-center mx-auto" id="error-message"></div>
         <div class="form-group w-50">
             <label for="username">Username</label>
             <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
@@ -53,7 +54,10 @@
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            const errorMessageDiv = document.getElementById('error-message');
+            errorMessageDiv.textContent = '';
             const csrfToken = "{{ csrf_token }}";
+
             fetch('/login/', {
                 method: 'POST',
                 headers: {
@@ -62,26 +66,24 @@
                 },
                 body: JSON.stringify({username: username, password: password})
             })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(data => {
-                        throw new Error(data.message || "An error occurred. Please try again later.");
-                    });
+            .then(response => response.json().then(data => ({
+                status: response.status, // On capture le statut HTTP
+                data  // On capture les données JSON
+            })))
+            .then(({status, data}) => {
+                if (status === 200 && data.success) {  // Authentification réussie
+                    loginForm.style.display = 'none';
+                    logoutDiv.style.display = 'block';
+                    userLogin.innerText = `Logged as ${data.username}`;
+                    document.getElementById('chatRedirectDiv').style.display = 'block';
+                } else {  // En cas d'erreur d'authentification
+                    errorMessageDiv.textContent = "Wrong Password or Username!";
                 }
-                console.log(response);
-                return response.json();
             })
-                .then(data => {
-                    if (data.success) {
-                        loginForm.style.display = 'none';
-                        logoutDiv.style.display = 'block';
-                        userLogin.innerText = `Logged as ${data.username}`;
-                        document.getElementById('chatRedirectDiv').style.display = 'block';
-                    } else {
-                        alert("Wrong Password or Username!");
-                    }
-                })
-                .catch(error => alert.error);
+            .catch(error => {
+                console.error('Error:', error);
+                errorMessageDiv.textContent = "An error occurred. Please try again later.";
+            });
         });
 
         document.getElementById('chatRedirectButton').addEventListener('click', function () {
