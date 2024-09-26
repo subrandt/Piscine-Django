@@ -1,58 +1,37 @@
-from django.http import JsonResponse
 from django.shortcuts import render
-from django.contrib.auth import login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.http import JsonResponse
+from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+
+import json
+
+@require_POST
+@csrf_exempt
+def loginUser(request):
+    data = json.loads(request.body.decode('utf-8'))
+    username = data.get('username')
+    password = data.get('password')
+    user = authenticate(username=username, password=password)
+
+    if user is not None:
+        login(request, user)
+        return JsonResponse({'success': True, 'message': 'Login successful', 'username': user.username})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid credentials'}, status=401)
+
+
+@require_POST
+def logoutUser(request):
+    logout(request,)
+    return JsonResponse({"success": True})
+
+
+
+
+
 
 def account_view(request):
-    if request.method == 'POST':
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            if 'logout' in request.POST:
-                return JsonResponse({'logged_out': True})
-            else:
-                form = AuthenticationForm(request, data=request.POST)
-                if form.is_valid():
-                    user = form.get_user()
-                    login(request, user)
-                    return JsonResponse({'logged_in': True, 'username': user.username})
-                else:
-                    return JsonResponse({
-                        'errors': form.errors,
-                        'register_suggestion': 'Login failed. If you do not have an account, please register.'
-                    })
-        else:
-            return JsonResponse({'error': 'Invalid request'}, status=400)
-    else:
-        if request.user.is_authenticated:
-            return render(request, 'logged_in.html', {'username': request.user.username})
-        else:
-            form = AuthenticationForm()
-            return render(request, 'login_form.html', {'form': form})
+        return render(request, "account.html", {})
 
 
-
-# def account_view(request):
-#     if request.method == 'POST':
-#         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-#             if 'logout' in request.POST:
-#                 logout(request)
-#                 return JsonResponse({'logged_out': True})
-#             else:
-#                 form = AuthenticationForm(request, data=request.POST)
-#                 if form.is_valid():
-#                     user = form.get_user()
-#                     login(request, user)
-#                     return JsonResponse({'logged_in': True, 'username': user.username})
-#                 else:
-#                     return JsonResponse({
-#                         'errors': form.errors,
-#                         'register_suggestion': 'Login failed. If you do not have an account, please register.'
-#                     })
-#         else:
-#             # Handle non-AJAX POST requests if necessary
-#             return JsonResponse({'error': 'Invalid request'}, status=400)
-#     else:
-#         if request.user.is_authenticated:
-#             return render(request, 'logged_in.html', {'username': request.user.username})
-#         else:
-#             form = AuthenticationForm()
-#             return render(request, 'login_form.html', {'form': form})

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div id="content">
+
+    <!-- Login Form -->
+    <form id="loginForm" style="display: none;">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+
+    <!-- Logout Button -->
+    <p id="userLogin"></p>
+    <div style="display:flex; justify-content: space-evenly">
+        <div id="logoutSection" style="display: none;">
+            <button id="logoutButton" class="btn btn-danger">Logout</button>
+        </div>
+        <div>
+        </div>
+        <div id="chatRedirectDiv" style="display: none;">
+            <button id="chatRedirectButton" class="btn btn-success">Go to Chat</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const loginForm = document.getElementById('loginForm');
+        const logoutButton = document.getElementById('logoutButton');
+        const userLogin = document.getElementById('userLogin');
+        const logoutDiv = document.getElementById('logoutSection');
+
+        function showLogin() {
+            loginForm.style.display = 'block';
+            logoutSection.style.display = 'none';
+            userLogin.innerHTML = '';
+        }
+
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const csrfToken = "{{ csrf_token }}";
+            fetch('/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({username: username, password: password})
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loginForm.style.display = 'none';
+                        logoutDiv.style.display = 'block';
+                        userLogin.innerText = `Logged as ${data.username}`;
+                        document.getElementById('chatRedirectDiv').style.display = 'block';
+                    } else {
+                        alert("Wrong Password or Username!");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('chatRedirectButton').addEventListener('click', function () {
+            window.location.href = '/chatrooms/'; // Redirect to the chat page
+        });
+
+        logoutButton.addEventListener('click', function (e) {
+            fetch('/logout/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showLogin();
+                        document.getElementById('chatRedirectDiv').style.display = 'none';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            console.log(document.cookie)
+            if (document.cookie && document.cookie !== '') {
+
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i];
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = cookie.substring(name.length + 1);
+                        break;
+                    }
+                }
+                console.log(cookieValue)
+            }
+            return cookieValue;
+        }
+
+        showLogin();
+    });
+</script>
+</body>
+</html>
