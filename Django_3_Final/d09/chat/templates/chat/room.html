@@ -47,6 +47,7 @@
         </div>
     </div>
 
+    <!-- Script to manage the chat messages -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
         var chatSocket = new WebSocket('ws://' + window.location.host + '/{{ room.id }}' + '/');

@@ -14,16 +14,15 @@ def loginUser(request):
     username = data.get('username')
     password = data.get('password')
 
-    # Créer une instance de AuthenticationForm avec les données de la requête
     form = AuthenticationForm(request, data=data)
 
-    # Valider les informations d'identification
+    # Check if the form is valid
     if form.is_valid():
         user = form.get_user()
         login(request, user)
         return JsonResponse({'success': True, 'message': 'Login successful', 'username': user.username})
     else:
-        # Récupérer les messages d'erreur du formulaire
+        # Get the error message from the login form
         errors = form.errors.get('__all__') or ["Invalid credentials"]
         return JsonResponse({'success': False, 'message': errors[0]}, status=401)
 
@@ -38,6 +37,7 @@ def logoutUser(request):
 def account_view(request):
         return render(request, "account.html", {})
 
+# in case of refresh (F5), check if user is authenticated
 def check_authentication(request):
     if request.user.is_authenticated:
         return JsonResponse({'authenticated': True, 'username': request.user.username})
