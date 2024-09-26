@@ -45,10 +45,35 @@
         const logoutDiv = document.getElementById('logoutSection');
 
         function showLogin() {
-            loginForm.style.display = 'block';
-            logoutSection.style.display = 'none';
+        // Vérifier si l'utilisateur est authentifié
+        fetch('check-authentication/', {  // Requête pour vérifier l'authentification
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.authenticated) {  // Si l'utilisateur est authentifié
+                loginForm.style.display = 'none';  // Cacher le formulaire de login
+                logoutDiv.style.display = 'block';  // Afficher le bouton de déconnexion
+                chatRedirectDiv.style.display = 'block';  // Afficher le bouton de redirection au chat
+                userLogin.innerText = `Logged as ${data.username}`;
+            } else {  // Si l'utilisateur n'est pas authentifié
+                loginForm.style.display = 'block';  // Afficher le formulaire de login
+                logoutDiv.style.display = 'none';  // Cacher le bouton de déconnexion
+                chatRedirectDiv.style.display = 'none';  // Cacher le bouton de redirection
+                userLogin.innerHTML = '';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            loginForm.style.display = 'block';  // En cas d'erreur, afficher le formulaire de login
+            logoutDiv.style.display = 'none';
+            chatRedirectDiv.style.display = 'none';
             userLogin.innerHTML = '';
-        }
+        });
+    }
 
         loginForm.addEventListener('submit', function (e) {
             e.preventDefault();

@@ -37,3 +37,9 @@ def logoutUser(request):
 
 def account_view(request):
         return render(request, "account.html", {})
+
+def check_authentication(request):
+    if request.user.is_authenticated:
+        return JsonResponse({'authenticated': True, 'username': request.user.username})
+    else:
+        return JsonResponse({'authenticated': False})
