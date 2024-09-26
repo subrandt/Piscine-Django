@@ -58,7 +58,7 @@
             errorMessageDiv.textContent = '';
             const csrfToken = "{{ csrf_token }}";
 
-            fetch('/login/', {
+            fetch('login/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,11 +87,11 @@
         });
 
         document.getElementById('chatRedirectButton').addEventListener('click', function () {
-            window.location.href = '/chatrooms/';
+            window.location.href = 'chatrooms/';
         });
 
         logoutButton.addEventListener('click', function (e) {
-            fetch('/logout/', {
+            fetch('logout/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
