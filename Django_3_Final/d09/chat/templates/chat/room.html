@@ -55,7 +55,6 @@
                 chatLogDiv.innerHTML += (data.user + ': ' + data.message + '<br>');
             }
 
-            // Scroll to the bottom of the chat log
             chatLogDiv.scrollTop = chatLogDiv.scrollHeight;
         };
 
@@ -63,23 +62,13 @@
             console.error('Chat socket closed unexpectedly');
         };
 
-
-        // chatSocket.onopen = function() {
-            // chatSocket.send(JSON.stringify({
-            //     'message': ' has joined the chat.',
-            //     'username': '{{ request.user.username }}',
-            //     'room_name': roomName,
-            //     'message_type': 'join'
-            // }));
-        // };
-
     }
 
     function sendMessage() {
         var messageInputDom = document.querySelector('#chat-message-input');
         var message = messageInputDom.value;
         if (message.trim() === "") {
-            return; // Ne pas envoyer de messages vides.
+            return;
         }
         chatSocket.send(JSON.stringify({
             'message': message,
@@ -100,18 +89,10 @@
         }
     });
 
-    // window.addEventListener('beforeunload', function(){
-        // chatSocket.send(JSON.stringify({
-        //     'message': ' has left the chat.',
-        //     'username': '{{ request.user.username }}',
-        //     'room_name': roomName,
-        //     'type': 'leave'
-        // }));
-    // });
 
     function updateUserList(users) {
         var userListUl = document.querySelector('#user-list-ul');
-        userListUl.innerHTML = ''; // Clear the current list
+        userListUl.innerHTML = '';
         users.forEach(function(user) {
             var li = document.createElement('li');
             li.textContent = user;
@@ -156,5 +137,10 @@ chatSocket.onmessage = function(e) {
 chatSocket.onclose = function(e) {
     console.error('Chat socket closed unexpectedly');
 };
+</script>
+<script>
+    $(document).ready(function() {
+        addLogoutEvent("#logoutButton");
+    });
 </script>
 {% endblock %}

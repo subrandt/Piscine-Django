@@ -7,8 +7,6 @@ def account_view(request):
     if request.method == 'POST':
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             if 'logout' in request.POST:
-                print("Logout request received")  # Ajoutez ceci pour vérifier
-                logout(request)
                 return JsonResponse({'logged_out': True})
             else:
                 form = AuthenticationForm(request, data=request.POST)
