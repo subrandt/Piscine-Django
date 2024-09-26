@@ -3,8 +3,8 @@ import json
 from .models import ChatRoom, ChatRoomUser, ChatMessage
 from asgiref.sync import async_to_sync
 
-
-connected_users = set()
+# Dictionnaire pour stocker les utilisateurs connectés par salle
+connected_users = {}
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -17,7 +17,9 @@ class ChatConsumer(WebsocketConsumer):
 
         user = self.scope["user"]
         if user.is_authenticated:
-            connected_users.add(user.username)
+            if self.room_name not in connected_users:
+                connected_users[self.room_name] = set()
+            connected_users[self.room_name].add(user.username)
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
@@ -82,8 +84,13 @@ class ChatConsumer(WebsocketConsumer):
 
     def disconnect(self, close_code):
         user = self.scope["user"]
-        ChatRoomUser.objects.filter(user=user, chat_room__id=self.room_name).delete()
         if user.is_authenticated:
+            # Supprime l'utilisateur de la salle dans connected_users
+            if self.room_name in connected_users and user.username in connected_users[self.room_name]:
+                connected_users[self.room_name].remove(user.username)
+                if not connected_users[self.room_name]:  # Si personne dans la salle, supprime la clé
+                    del connected_users[self.room_name]
+                
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
@@ -92,15 +99,16 @@ class ChatConsumer(WebsocketConsumer):
                     'username': user.username
                 }
             )
-            connected_users.discard(user.username)
             self.send_user_list()
 
     def send_user_list(self):
+        # Récupère la liste des utilisateurs connectés pour la salle actuelle
+        users_in_room = connected_users.get(self.room_name, [])
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'update_users_list',
-                'users': list(connected_users)
+                'users': list(users_in_room)
             }
         )
 

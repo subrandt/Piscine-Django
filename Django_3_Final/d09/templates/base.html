@@ -12,6 +12,7 @@
 <body >
     <header>
         <nav>
+            
             <button id="logoutButton" class="nav-link btn btn-link" type="button">Logout</button>
         </nav>
     </header>
@@ -32,7 +33,7 @@
                     },
                     success: function(data) {
                         if(data.success) {
-                            window.location.href = '/'; // Redirect to the homepage or login page
+                            window.location.href = '/';
                         }
                     },
                     error: function(xhr, status, error) {
