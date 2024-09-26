@@ -12,7 +12,6 @@
 <body >
     <header>
         <nav>
-            
             <button id="logoutButton" class="nav-link btn btn-link" type="button">Logout</button>
         </nav>
     </header>
@@ -20,6 +19,8 @@
         {% block content %}
         {% endblock %}
     </div>
+
+    <!-- Script for ajax -->
     <script>
         $(document).ready(function() {
             $('#logoutButton').click(function(e) {
