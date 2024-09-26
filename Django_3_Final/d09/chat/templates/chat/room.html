@@ -3,8 +3,9 @@
 {% block content %}
 
 <div class="container">
+
+    <!-- Connected users -->
     <div class="row mt-3 border p-3">
-        <!-- Connected users -->
         <div class="connected-users">
             <h3>Connected Users</h3>
             <ul>
@@ -17,13 +18,13 @@
         </div>
     </div>
 
+    <!-- Chat content -->
     <div class="row mt-3 border p-3">
-        <!-- Chat content -->
         <div class="chat-header">
             <h2>{{room.name}}</h2>
         </div>
         
-        <div class="chat-messages">
+        <div class="chat-messages" class="border p-3" style="height: 300px; overflow-y: scroll;">
             {% for message in messages %}
             <div class="message">
                 <strong>{{ message.user.username }}:</strong> {{ message.message }}
@@ -33,11 +34,15 @@
             <p>No messages yet</p>
             {% endfor %}
         </div>
-        <div class="chat-form">
+    </div>
+
+    <!-- Input and send chat message -->
+    <div class="row mt-3 border p-3">
+        <div class="text-start"></div>
             <form id="messageForm" method="POST" action="{% url 'chat_room' room_id=room.id %}">
                 {% csrf_token %}
-                <input type="text" name="message" id="messageInput" class="chat-input" placeholder="Type a message...">
-                <button type="submit" class="chat-submit">Send</button>
+                <input type="text" name="message" id="messageInput" class="chat-message-input" placeholder="Type your message here...">
+                <button id="chat-message-submit" class="btn btn-primary" type="button">Send</button>
             </form>
         </div>
     </div>
@@ -92,7 +97,7 @@
         };
     })
     </script>
-    
+
 </div>
 
 

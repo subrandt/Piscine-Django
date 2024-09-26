@@ -22,16 +22,11 @@ def loginUser(request):
 
 
 @require_POST
+@csrf_exempt
 def logoutUser(request):
-    logout(request,)
-    return JsonResponse({"success": True})
-
-
-
-
+    logout(request)
+    return JsonResponse({"success": True, "message": "Logout successful"})
 
 
 def account_view(request):
         return render(request, "account.html", {})
-
-

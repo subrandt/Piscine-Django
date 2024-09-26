@@ -23,7 +23,7 @@
             $('#logoutButton').click(function(e) {
                 e.preventDefault();
                 $.ajax({
-                    url: '{% url "logout" %}',
+                    url: '{% url "logoutUser" %}',
                     type: 'POST',
                     dataType: 'json',
                     beforeSend: function(xhr, settings) {
