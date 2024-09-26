@@ -120,5 +120,41 @@
     }
 
     connectWebSocket();
+
+    function leaveRoom() {
+    chatSocket.send(JSON.stringify({
+        'message': 'has left the chat.',
+        'username': '{{ request.user.username }}',
+        'room_name': roomName,
+        'type': 'leave'
+    }));
+    chatSocket.close(); // Fermer explicitement le WebSocket
+}
+
+// Sur fermeture de la page ou rafraîchissement, envoyer le message de départ
+window.addEventListener('beforeunload', leaveRoom);
+
+// Gestion des messages de WebSocket
+chatSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    console.log("Received message:", data);
+
+    var chatLogDiv = document.querySelector('#chat-log');
+    if (data.type === 'join' || data.type === 'leave') {
+        chatLogDiv.innerHTML += ('<i>' + data.user + ': ' + data.message + '</i><br>');
+    } else if (data.type === 'update_users_list') {
+        updateUserList(data.users);
+    } else {
+        chatLogDiv.innerHTML += (data.user + ': ' + data.message + '<br>');
+    }
+
+    // Scroll to the bottom of the chat log
+    chatLogDiv.scrollTop = chatLogDiv.scrollHeight;
+};
+
+// Assurer la fermeture propre du WebSocket
+chatSocket.onclose = function(e) {
+    console.error('Chat socket closed unexpectedly');
+};
 </script>
 {% endblock %}
